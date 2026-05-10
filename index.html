@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Dados DREG</title>
+<style>
+  :root {
+    --bg: #080f1c;
+    --bg-card: #0d1a2e;
+    --bg-card-hover: #112138;
+    --bg-header: #060d1a;
+    --border: #172840;
+    --border-hover: rgba(240,192,64,.4);
+    --gold: #f0c040;
+    --gold-dim: rgba(240,192,64,.12);
+    --text: #dce8f5;
+    --text-dim: #6b859e;
+    --grtc: #2e86c1;
+    --ggat: #1e9e5e;
+    --geer: #d4762a;
+    --pbi: #f2c811;
+    --sp: #03b8ba;
+    --pa: #b36bba;
+    --wb: #4fa8e8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--bg-header);
+    border-bottom: 1px solid #162030;
+    padding: 28px 48px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 50% -20%, rgba(240,192,64,.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hd-left { display: flex; align-items: center; gap: 20px; }
+
+  .hd-logo {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, #1a3555, #0d2040);
+    border: 1px solid rgba(240,192,64,.3);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .hd-logo svg { width: 28px; height: 28px; }
+
+  .hd-texts { display: flex; flex-direction: column; }
+
+  .hd-eyebrow {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    margin-bottom: 3px;
+  }
+
+  .hd-title {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .hd-title .portal { color: var(--text); }
+  .hd-title .dreg   { color: var(--gold); margin-left: 8px; }
+
+  .hd-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-shrink: 0;
+  }
+
+  .hd-stat {
+    text-align: center;
+    background: rgba(255,255,255,.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 20px;
+  }
+
+  .hd-stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .hd-stat-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 3px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── CONTROLS ── */
+  .controls {
+    padding: 16px 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(6,13,26,.6);
+    flex-wrap: wrap;
+  }
+
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+    max-width: 380px;
+  }
+
+  .search-wrap svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    pointer-events: none;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 9px 12px 9px 38px;
+    border-radius: 8px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color .2s;
+  }
+
+  .search-wrap input:focus { border-color: rgba(240,192,64,.5); }
+  .search-wrap input::placeholder { color: var(--text-dim); }
+
+  .divider { width: 1px; height: 28px; background: var(--border); flex-shrink: 0; }
+
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .fbtn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 7px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .5px;
+    transition: all .2s;
+  }
+
+  .fbtn:hover { border-color: var(--gold); color: var(--gold); }
+
+  .fbtn.active-all { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+  .fbtn.active-grtc { border-color: var(--grtc); color: var(--grtc); background: rgba(46,134,193,.12); }
+  .fbtn.active-ggat { border-color: var(--ggat); color: var(--ggat); background: rgba(30,158,94,.12); }
+  .fbtn.active-geer { border-color: var(--geer); color: var(--geer); background: rgba(212,118,42,.12); }
+
+  .count-pill {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text-dim);
+    padding: 6px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* ── MAIN ── */
+  main { padding: 32px 48px; }
+
+  /* Section */
+  .section { margin-bottom: 44px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-bar {
+    width: 4px; height: 20px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .grtc-bar { background: var(--grtc); }
+  .ggat-bar { background: var(--ggat); }
+  .geer-bar { background: var(--geer); }
+
+  .section-name {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .section-full {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .section-cnt {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--text-dim);
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2px 10px;
+  }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+  }
+
+  /* Card */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+    transition: all .25s ease;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    border-radius: 14px 0 0 14px;
+    transition: width .25s;
+  }
+
+  .card.grtc::before { background: var(--grtc); }
+  .card.ggat::before { background: var(--ggat); }
+  .card.geer::before { background: var(--geer); }
+
+  .card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+  }
+
+  .card:hover::before { width: 5px; }
+
+  /* Card top row */
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  /* Type badge */
+  .type-badge {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    padding: 3px 9px;
+    border-radius: 5px;
+  }
+
+  .type-badge .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .tb-powerbi   { background: rgba(242,200,17,.1); color: var(--pbi); border: 1px solid rgba(242,200,17,.2); }
+  .tb-powerbi .dot { background: var(--pbi); }
+
+  .tb-sharepoint { background: rgba(3,184,186,.1); color: var(--sp); border: 1px solid rgba(3,184,186,.2); }
+  .tb-sharepoint .dot { background: var(--sp); }
+
+  .tb-powerapps { background: rgba(179,107,186,.1); color: var(--pa); border: 1px solid rgba(179,107,186,.2); }
+  .tb-powerapps .dot { background: var(--pa); }
+
+  .tb-web       { background: rgba(79,168,232,.1); color: var(--wb); border: 1px solid rgba(79,168,232,.2); }
+  .tb-web .dot  { background: var(--wb); }
+
+  /* Gerencia badge */
+  .ger-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    padding: 3px 9px;
+    border-radius: 5px;
+  }
+
+  .gb-GRTC { background: rgba(46,134,193,.15); color: #5bb5e8; border: 1px solid rgba(46,134,193,.25); }
+  .gb-GGAT { background: rgba(30,158,94,.15); color: #5dd6a0; border: 1px solid rgba(30,158,94,.25); }
+  .gb-GEER { background: rgba(212,118,42,.15); color: #f5a75e; border: 1px solid rgba(212,118,42,.25); }
+
+  /* Card name */
+  .card-nome {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.35;
+  }
+
+  .card-produto {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  /* Card footer */
+  .card-footer {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .btn-access {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(240,192,64,.3);
+    color: var(--gold);
+    padding: 7px 18px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all .2s;
+  }
+
+  .btn-access:hover {
+    background: rgba(240,192,64,.2);
+    border-color: var(--gold);
+  }
+
+  .btn-access svg { width: 13px; height: 13px; }
+
+  /* No results */
+  .no-results {
+    display: none;
+    text-align: center;
+    padding: 72px 24px;
+    color: var(--text-dim);
+  }
+
+  .no-results svg { width: 48px; height: 48px; margin-bottom: 16px; opacity: .35; }
+  .no-results h3 { font-size: 18px; margin-bottom: 6px; color: var(--text); }
+
+  .hidden { display: none !important; }
+
+  /* Footer */
+  footer {
+    margin-top: 16px;
+    padding: 18px 48px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    header, .controls, main, footer { padding-left: 20px; padding-right: 20px; }
+    .hd-title { font-size: 22px; }
+    .hd-stat { padding: 8px 14px; }
+    .hd-right { gap: 12px; }
+    .count-pill { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .hd-right { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════ HEADER ════════════ -->
+<header>
+  <div class="hd-left">
+    <div class="hd-logo">
+      <!-- Electric bolt icon -->
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="16,3 7,16 13,16 12,25 21,12 15,12" fill="#f0c040"/>
+      </svg>
+    </div>
+    <div class="hd-texts">
+      <span class="hd-eyebrow">Diretoria de Regulação</span>
+      <h1 class="hd-title">
+        <span class="portal">Portal de Dados</span><span class="dreg">DREG</span>
+      </h1>
+    </div>
+  </div>
+  <div class="hd-right">
+    <div class="hd-stat">
+      <div class="hd-stat-value">19</div>
+      <div class="hd-stat-label">Indicadores</div>
+    </div>
+    <div class="hd-stat">
+      <div class="hd-stat-value">3</div>
+      <div class="hd-stat-label">Gerências</div>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════ CONTROLS ════════════ -->
+<div class="controls">
+  <div class="search-wrap">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input type="text" id="search" placeholder="Buscar indicador…" oninput="render()">
+  </div>
+  <div class="divider"></div>
+  <div class="filters">
+    <button class="fbtn active-all" id="btn-all"  onclick="setFilter('all')">Todos</button>
+    <button class="fbtn"            id="btn-GRTC" onclick="setFilter('GRTC')">GRTC</button>
+    <button class="fbtn"            id="btn-GGAT" onclick="setFilter('GGAT')">GGAT</button>
+    <button class="fbtn"            id="btn-GEER" onclick="setFilter('GEER')">GEER</button>
+  </div>
+  <div class="count-pill" id="count-pill">19 indicadores</div>
+</div>
+
+<!-- ════════════ MAIN ════════════ -->
+<main id="main"></main>
+
+<div class="no-results" id="no-results">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+  </svg>
+  <h3>Nenhum resultado encontrado</h3>
+  <p>Tente outro termo de busca ou remova os filtros.</p>
+</div>
+
+<footer>Portal de Dados DREG &mdash; Diretoria de Regulação &mdash; Energisa</footer>
+
+<script>
+const TYPE_LABELS = {
+  powerbi:    'Power BI',
+  sharepoint: 'SharePoint',
+  powerapps:  'Power Apps',
+  web:        'Web',
+};
+
+const SECTIONS = [
+  { id: 'GRTC', full: 'Gerência de Regulação Técnica e Comercial', barClass: 'grtc-bar' },
+  { id: 'GGAT', full: 'Gerência de Gestão de Ativos',              barClass: 'ggat-bar' },
+  { id: 'GEER', full: 'Gerência de Estudos Econômicos e Regulatórios', barClass: 'geer-bar' },
+];
+
+const DATA = [
+  // ── GRTC ──────────────────────────────────────────────────────────────────
+  {
+    nome: 'Indicadores Comerciais',
+    produto: 'BI Indicadores Comerciais',
+    tipo: 'powerbi',
+    gerencia: 'GRTC',
+    url: 'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/0df16ef2-cb0f-4d40-a4e4-e21403861092/efe11607ded792d30a46?experience=power-bi',
+  },
+  {
+    nome: 'Governança Corporativa',
+    produto: 'BI Governança Corporativa',
+    tipo: 'powerbi',
+    gerencia: 'GRTC',
+    url: 'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/742285d2-92eb-43bf-bc6e-3c924a8dc772?experience=power-bi',
+  },
+  {
+    nome: 'Qualidade Técnica',
+    produto: 'BI Qualidade Técnica – Gerencial',
+    tipo: 'powerbi',
+    gerencia: 'GRTC',
+    url: 'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/3d495194-32a2-42a9-bac3-6884cc72862b/e4a7f4aec67c9a0a853b?experience=power-bi',
+  },
+  {
+    nome: 'Autos de Infração, Reuniões e Processos Julgados',
+    produto: 'BI Autos de Infração, Reuniões e Processos Julgados',
+    tipo: 'powerbi',
+    gerencia: 'GRTC',
+    url: 'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/6785d9a5-bd42-48d8-9752-8ddaf6adf748/f413121f8a32b2f64547?experience=power-bi',
+  },
+  {
+    nome: 'ISE',
+    produto: 'BI ISE',
+    tipo: 'powerbi',
+    gerencia: 'GRTC',
+    url: 'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/ac4d56b8-ddd8-426c-8eff-59954a3136e7/ReportSection0244f96681f0d0b4459d?experience=power-bi',
+  },
+  {
+    nome: 'Interrupções (> 24 horas)',
+    produto: 'BI Interrupções Acima de 24 Horas',
+    tipo: 'powerbi',
+    gerencia: 'GRTC',
+    url: 'https://app.powerbi.com/reportEmbed?reportId=3a7405b9-4ac9-403a-ba3c-1cb77f1a4b86&autoAuth=true&ctid=f8c68086-b95c-49cb-9d38-ed37940abef5',
+  },
+  {
+    nome: 'Qualidade do Produto',
+    produto: 'BI Qualidade do Produto',
+    tipo: 'powerbi',
+    gerencia: 'GRTC',
+    url: 'https://app.powerbi.com/reportEmbed?reportId=375c16a3-34ea-472c-b7a7-d972f33b9ddb&autoAuth=true&ctid=f8c68086-b95c-49cb-9d38-ed37940abef5',
+  },
+  {
+    nome: 'POTEE',
+    produto: 'POTEE – Power BI',
+    tipo: 'powerbi',
+    gerencia: 'GRTC',
+    url: 'https://app.powerbi.com/reportEmbed?reportId=55e2c3e1-9d11-4c0b-85d5-2fb3d4c686f9&autoAuth=true&ctid=f8c68086-b95c-49cb-9d38-ed37940abef5',
+  },
+  {
+    nome: 'Partes Relacionadas',
+    produto: 'Power Apps CRC – Partes Relacionadas',
+    tipo: 'powerapps',
+    gerencia: 'GRTC',
+    url: 'https://apps.powerapps.com/play/e/default-f8c68086-b95c-49cb-9d38-ed37940abef5/a/8b2de29b-9823-412c-92a2-caf33d0e193f?tenantId=f8c68086-b95c-49cb-9d38-ed37940abef5&hint=b4cb9f62-82d2-4798-86d3-b241f5506675&sourcetime=1771268889333',
+  },
+  {
+    nome: 'Agenda Regulatória',
+    produto: 'BI Agenda Regulatória',
+    tipo: 'powerbi',
+    gerencia: 'GRTC',
+    url: 'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/6f072f63-fca0-4cf1-ac05-76654c8d4961/ReportSection40c24de1585aa63273b4?experience=power-bi',
+  },
+  {
+    nome: 'Performance Operacional',
+    produto: 'Visão Executiva de Performance Operacional',
+    tipo: 'web',
+    gerencia: 'GRTC',
+    url: 'https://thiagobruno-coder.github.io/Painel_Executivo/',
+  },
+
+  // ── GGAT ──────────────────────────────────────────────────────────────────
+  {
+    nome: 'Ativo Elétrico',
+    produto: 'Ativo Elétrico',
+    tipo: 'sharepoint',
+    gerencia: 'GGAT',
+    url: 'https://energisa.sharepoint.com/sites/GGAT-GestodeAtivos/SitePages/Ativo-El%C3%A9trico.aspx',
+  },
+  {
+    nome: 'Capitalização',
+    produto: 'Capitalização',
+    tipo: 'sharepoint',
+    gerencia: 'GGAT',
+    url: 'https://energisa.sharepoint.com/sites/GGAT-GestodeAtivos/SitePages/Capitaliza%C3%A7%C3%A3o.aspx',
+  },
+  {
+    nome: 'Projeção BRL/VNR',
+    produto: 'Projeção BRL/VNR',
+    tipo: 'sharepoint',
+    gerencia: 'GGAT',
+    url: 'https://energisa.sharepoint.com/sites/GGAT-GestodeAtivos/SitePages/Proje%C3%A7%C3%A3o-de-BRL.aspx',
+  },
+  {
+    nome: 'Glosa',
+    produto: 'Glosa',
+    tipo: 'sharepoint',
+    gerencia: 'GGAT',
+    url: 'https://energisa.sharepoint.com/sites/GGAT-GestodeAtivos/SitePages/Indicador-de-Glosa.aspx',
+  },
+  {
+    nome: 'Conciliação de Bases',
+    produto: 'Conciliação Físico vs. Contábil',
+    tipo: 'powerbi',
+    gerencia: 'GGAT',
+    url: 'https://app.powerbi.com/reportEmbed?reportId=f5118945-4541-4f3d-8eea-90097f8c1a56&autoAuth=true&ctid=f8c68086-b95c-49cb-9d38-ed37940abef5',
+  },
+
+  // ── GEER ──────────────────────────────────────────────────────────────────
+  {
+    nome: 'DRE Setorial',
+    produto: 'DRE Setorial',
+    tipo: 'powerbi',
+    gerencia: 'GEER',
+    url: 'https://app.powerbi.com/links/9s9qO7Rnwk?ctid=f8c68086-b95c-49cb-9d38-ed37940abef5&pbi_source=linkShare&bookmarkGuid=a05c1199-1029-4bc5-8e20-6a845014aedc&chromeless=true',
+  },
+  {
+    nome: 'Acompanhamento dos Processos ANEEL',
+    produto: 'Acompanhamento dos Processos ANEEL (2024–2026)',
+    tipo: 'web',
+    gerencia: 'GEER',
+    url: 'https://consultas-processos-aneel.vercel.app/',
+  },
+  {
+    nome: 'Carregamento Financeiro',
+    produto: 'Carregamento Financeiro',
+    tipo: 'powerbi',
+    gerencia: 'GEER',
+    url: 'https://app.powerbi.com/links/9s9qO7Rnwk?ctid=f8c68086-b95c-49cb-9d38-ed37940abef5&pbi_source=linkShare&bookmarkGuid=89f13903-11ea-480d-ad9d-a3bf1da22555&chromeless=true',
+  },
+];
+
+let activeFilter = 'all';
+
+function setFilter(f) {
+  activeFilter = f;
+  ['all','GRTC','GGAT','GEER'].forEach(k => {
+    const btn = document.getElementById('btn-' + k);
+    btn.className = 'fbtn';
+    if (k === f) btn.classList.add(k === 'all' ? 'active-all' : 'active-' + k.toLowerCase());
+  });
+  render();
+}
+
+function card(item) {
+  const typeLabel = TYPE_LABELS[item.tipo] || item.tipo;
+  return `
+    <div class="card ${item.gerencia.toLowerCase()}">
+      <div class="card-top">
+        <span class="type-badge tb-${item.tipo}">
+          <span class="dot"></span>${typeLabel}
+        </span>
+        <span class="ger-badge gb-${item.gerencia}">${item.gerencia}</span>
+      </div>
+      <div class="card-nome">${item.nome}</div>
+      <div class="card-produto">${item.produto}</div>
+      <div class="card-footer">
+        <a class="btn-access" href="${item.url}" target="_blank" rel="noopener noreferrer">
+          Acessar
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
+    </div>`;
+}
+
+function render() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const mainEl = document.getElementById('main');
+  const noRes  = document.getElementById('no-results');
+  const pill   = document.getElementById('count-pill');
+
+  let filtered = DATA.filter(d => {
+    const matchFilter = activeFilter === 'all' || d.gerencia === activeFilter;
+    const matchSearch = !q || d.nome.toLowerCase().includes(q) || d.produto.toLowerCase().includes(q) || d.gerencia.toLowerCase().includes(q);
+    return matchFilter && matchSearch;
+  });
+
+  pill.textContent = filtered.length + ' indicador' + (filtered.length !== 1 ? 'es' : '');
+
+  if (filtered.length === 0) {
+    mainEl.innerHTML = '';
+    noRes.style.display = 'block';
+    return;
+  }
+  noRes.style.display = 'none';
+
+  // Group by section
+  let html = '';
+  SECTIONS.forEach(sec => {
+    const items = filtered.filter(d => d.gerencia === sec.id);
+    if (items.length === 0) return;
+
+    html += `
+      <div class="section">
+        <div class="section-header">
+          <div class="section-bar ${sec.barClass}"></div>
+          <span class="section-name">${sec.id}</span>
+          <span class="section-full">${sec.full}</span>
+          <span class="section-cnt">${items.length}</span>
+        </div>
+        <div class="grid">
+          ${items.map(card).join('')}
+        </div>
+      </div>`;
+  });
+
+  mainEl.innerHTML = html;
+}
+
+render();
+</script>
+</body>
+</html>
