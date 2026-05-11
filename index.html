@@ -7,18 +7,19 @@
 <style>
   :root {
     --bg: #080f1c;
-    --bg-card: #0d1a2e;
-    --bg-card-hover: #112138;
+    --bg-card: #162a44;
+    --bg-card-hover: #1c3252;
     --bg-header: #060d1a;
-    --border: #172840;
+    --border: #1e3557;
     --border-hover: rgba(240,192,64,.4);
     --gold: #f0c040;
     --gold-dim: rgba(240,192,64,.12);
     --text: #dce8f5;
     --text-dim: #6b859e;
-    --grtc: #2e86c1;
-    --ggat: #1e9e5e;
-    --geer: #d4762a;
+    --grtc: #2196f3;
+    --ggat: #22c976;
+    --geer: #f08030;
+    --grec: #a855f7;
     --pbi: #f2c811;
     --sp: #03b8ba;
     --pa: #b36bba;
@@ -30,7 +31,7 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
     min-height: 100vh;
   }
 
@@ -66,7 +67,7 @@
     flex-shrink: 0;
   }
 
-  .hd-logo svg { width: 28px; height: 28px; }
+  .hd-logo svg { width: auto; height: 46px; }
 
   .hd-texts { display: flex; flex-direction: column; }
 
@@ -155,6 +156,7 @@
     font-size: 13px;
     outline: none;
     transition: border-color .2s;
+    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
   }
 
   .search-wrap input:focus { border-color: rgba(240,192,64,.5); }
@@ -175,15 +177,16 @@
     font-weight: 600;
     letter-spacing: .5px;
     transition: all .2s;
+    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
   }
 
   .fbtn:hover { border-color: var(--gold); color: var(--gold); }
 
-  .fbtn.active-all { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
-
-  .fbtn.active-grtc { border-color: var(--grtc); color: var(--grtc); background: rgba(46,134,193,.12); }
-  .fbtn.active-ggat { border-color: var(--ggat); color: var(--ggat); background: rgba(30,158,94,.12); }
-  .fbtn.active-geer { border-color: var(--geer); color: var(--geer); background: rgba(212,118,42,.12); }
+  .fbtn.active-all  { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+  .fbtn.active-grtc { border-color: var(--grtc); color: var(--grtc); background: rgba(33,150,243,.12); }
+  .fbtn.active-ggat { border-color: var(--ggat); color: var(--ggat); background: rgba(34,201,118,.12); }
+  .fbtn.active-geer { border-color: var(--geer); color: var(--geer); background: rgba(240,128,48,.12); }
+  .fbtn.active-grec { border-color: var(--grec); color: var(--grec); background: rgba(168,85,247,.12); }
 
   .count-pill {
     margin-left: auto;
@@ -220,6 +223,7 @@
   .grtc-bar { background: var(--grtc); }
   .ggat-bar { background: var(--ggat); }
   .geer-bar { background: var(--geer); }
+  .grec-bar { background: var(--grec); }
 
   .section-name {
     font-size: 15px;
@@ -276,6 +280,7 @@
   .card.grtc::before { background: var(--grtc); }
   .card.ggat::before { background: var(--ggat); }
   .card.geer::before { background: var(--geer); }
+  .card.grec::before { background: var(--grec); }
 
   .card:hover {
     background: var(--bg-card-hover);
@@ -285,6 +290,34 @@
   }
 
   .card:hover::before { width: 5px; }
+
+  /* Empty card (GREC sem BIs) */
+  .card-empty {
+    background: rgba(22,42,68,.4);
+    border: 1px dashed rgba(168,85,247,.25);
+    border-radius: 14px;
+    padding: 28px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    opacity: .7;
+  }
+
+  .card-empty-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(168,85,247,.1);
+    border: 1px solid rgba(168,85,247,.2);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 4px;
+  }
+
+  .card-empty-icon svg { width: 18px; height: 18px; color: var(--grec); }
+  .card-empty-title { font-size: 13px; font-weight: 600; color: var(--text-dim); }
+  .card-empty-sub   { font-size: 11px; color: var(--text-dim); opacity: .7; }
 
   /* Card top row */
   .card-top {
@@ -313,17 +346,17 @@
     flex-shrink: 0;
   }
 
-  .tb-powerbi   { background: rgba(242,200,17,.1); color: var(--pbi); border: 1px solid rgba(242,200,17,.2); }
+  .tb-powerbi    { background: rgba(242,200,17,.1);  color: var(--pbi); border: 1px solid rgba(242,200,17,.2); }
   .tb-powerbi .dot { background: var(--pbi); }
 
-  .tb-sharepoint { background: rgba(3,184,186,.1); color: var(--sp); border: 1px solid rgba(3,184,186,.2); }
+  .tb-sharepoint { background: rgba(3,184,186,.1);   color: var(--sp);  border: 1px solid rgba(3,184,186,.2); }
   .tb-sharepoint .dot { background: var(--sp); }
 
-  .tb-powerapps { background: rgba(179,107,186,.1); color: var(--pa); border: 1px solid rgba(179,107,186,.2); }
+  .tb-powerapps  { background: rgba(179,107,186,.1); color: var(--pa);  border: 1px solid rgba(179,107,186,.2); }
   .tb-powerapps .dot { background: var(--pa); }
 
-  .tb-web       { background: rgba(79,168,232,.1); color: var(--wb); border: 1px solid rgba(79,168,232,.2); }
-  .tb-web .dot  { background: var(--wb); }
+  .tb-web        { background: rgba(79,168,232,.1);  color: var(--wb);  border: 1px solid rgba(79,168,232,.2); }
+  .tb-web .dot   { background: var(--wb); }
 
   /* Gerencia badge */
   .ger-badge {
@@ -334,9 +367,10 @@
     border-radius: 5px;
   }
 
-  .gb-GRTC { background: rgba(46,134,193,.15); color: #5bb5e8; border: 1px solid rgba(46,134,193,.25); }
-  .gb-GGAT { background: rgba(30,158,94,.15); color: #5dd6a0; border: 1px solid rgba(30,158,94,.25); }
-  .gb-GEER { background: rgba(212,118,42,.15); color: #f5a75e; border: 1px solid rgba(212,118,42,.25); }
+  .gb-GRTC { background: rgba(33,150,243,.18);  color: #60b8ff; border: 1px solid rgba(33,150,243,.3); }
+  .gb-GGAT { background: rgba(34,201,118,.18);  color: #5deba0; border: 1px solid rgba(34,201,118,.3); }
+  .gb-GEER { background: rgba(240,128,48,.18);  color: #ffaa60; border: 1px solid rgba(240,128,48,.3); }
+  .gb-GREC { background: rgba(168,85,247,.18);  color: #cc88ff; border: 1px solid rgba(168,85,247,.3); }
 
   /* Card name */
   .card-nome {
@@ -374,6 +408,7 @@
     font-weight: 600;
     text-decoration: none;
     transition: all .2s;
+    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
   }
 
   .btn-access:hover {
@@ -426,9 +461,42 @@
 <header>
   <div class="hd-left">
     <div class="hd-logo">
-      <!-- Electric bolt icon -->
-      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="16,3 7,16 13,16 12,25 21,12 15,12" fill="#f0c040"/>
+      <!-- Transmission tower icon -->
+      <svg viewBox="0 0 30 38" fill="none" stroke="#f0c040" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <!-- peak -->
+        <line x1="15" y1="1"  x2="12" y2="8"  stroke-width="1.5"/>
+        <line x1="15" y1="1"  x2="18" y2="8"  stroke-width="1.5"/>
+        <line x1="12" y1="8"  x2="18" y2="8"  stroke-width="1.5"/>
+        <!-- upper cross-arms -->
+        <line x1="5"  y1="8"  x2="12" y2="8"  stroke-width="1.5"/>
+        <line x1="18" y1="8"  x2="25" y2="8"  stroke-width="1.5"/>
+        <line x1="5"  y1="8"  x2="5"  y2="10.5" stroke-width="1.5"/>
+        <line x1="25" y1="8"  x2="25" y2="10.5" stroke-width="1.5"/>
+        <!-- upper body sides -->
+        <line x1="12" y1="8"  x2="10" y2="18" stroke-width="1.5"/>
+        <line x1="18" y1="8"  x2="20" y2="18" stroke-width="1.5"/>
+        <!-- upper body X bracing -->
+        <line x1="12" y1="8"  x2="20" y2="18" stroke-width="1"/>
+        <line x1="18" y1="8"  x2="10" y2="18" stroke-width="1"/>
+        <!-- upper body mid bar -->
+        <line x1="11" y1="13" x2="19" y2="13" stroke-width="1"/>
+        <!-- lower cross-arms -->
+        <line x1="4"  y1="18" x2="10" y2="18" stroke-width="1.5"/>
+        <line x1="20" y1="18" x2="26" y2="18" stroke-width="1.5"/>
+        <line x1="4"  y1="18" x2="4"  y2="20.5" stroke-width="1.5"/>
+        <line x1="26" y1="18" x2="26" y2="20.5" stroke-width="1.5"/>
+        <!-- lower body sides -->
+        <line x1="10" y1="18" x2="7.5" y2="29" stroke-width="1.5"/>
+        <line x1="20" y1="18" x2="22.5" y2="29" stroke-width="1.5"/>
+        <!-- lower body X bracing -->
+        <line x1="10" y1="18" x2="22.5" y2="29" stroke-width="1"/>
+        <line x1="20" y1="18" x2="7.5"  y2="29" stroke-width="1"/>
+        <!-- lower body mid bar -->
+        <line x1="8.75" y1="23.5" x2="21.25" y2="23.5" stroke-width="1"/>
+        <!-- base feet -->
+        <line x1="7.5"  y1="29" x2="5"  y2="36" stroke-width="1.5"/>
+        <line x1="22.5" y1="29" x2="25" y2="36" stroke-width="1.5"/>
+        <line x1="5"    y1="36" x2="25" y2="36" stroke-width="1.5"/>
       </svg>
     </div>
     <div class="hd-texts">
@@ -444,7 +512,7 @@
       <div class="hd-stat-label">Indicadores</div>
     </div>
     <div class="hd-stat">
-      <div class="hd-stat-value">3</div>
+      <div class="hd-stat-value">4</div>
       <div class="hd-stat-label">Gerências</div>
     </div>
   </div>
@@ -464,6 +532,7 @@
     <button class="fbtn"            id="btn-GRTC" onclick="setFilter('GRTC')">GRTC</button>
     <button class="fbtn"            id="btn-GGAT" onclick="setFilter('GGAT')">GGAT</button>
     <button class="fbtn"            id="btn-GEER" onclick="setFilter('GEER')">GEER</button>
+    <button class="fbtn"            id="btn-GREC" onclick="setFilter('GREC')">GREC</button>
   </div>
   <div class="count-pill" id="count-pill">19 indicadores</div>
 </div>
@@ -490,9 +559,10 @@ const TYPE_LABELS = {
 };
 
 const SECTIONS = [
-  { id: 'GRTC', full: 'Gerência de Regulação Técnica e Comercial', barClass: 'grtc-bar' },
-  { id: 'GGAT', full: 'Gerência de Gestão de Ativos',              barClass: 'ggat-bar' },
-  { id: 'GEER', full: 'Gerência de Estudos Econômicos e Regulatórios', barClass: 'geer-bar' },
+  { id: 'GRTC', full: 'Gerência de Gestão Técnica e Comercial',       barClass: 'grtc-bar' },
+  { id: 'GGAT', full: 'Gerência de Gestão de Ativos',                  barClass: 'ggat-bar' },
+  { id: 'GEER', full: 'Gerência de Estudos e Estratégia Regulatória',  barClass: 'geer-bar' },
+  { id: 'GREC', full: 'Gerência de Regulação Econômica',               barClass: 'grec-bar' },
 ];
 
 const DATA = [
@@ -634,13 +704,15 @@ const DATA = [
     gerencia: 'GEER',
     url: 'https://app.powerbi.com/links/9s9qO7Rnwk?ctid=f8c68086-b95c-49cb-9d38-ed37940abef5&pbi_source=linkShare&bookmarkGuid=89f13903-11ea-480d-ad9d-a3bf1da22555&chromeless=true',
   },
+
+  // ── GREC ── (sem indicadores cadastrados ainda)
 ];
 
 let activeFilter = 'all';
 
 function setFilter(f) {
   activeFilter = f;
-  ['all','GRTC','GGAT','GEER'].forEach(k => {
+  ['all','GRTC','GGAT','GEER','GREC'].forEach(k => {
     const btn = document.getElementById('btn-' + k);
     btn.className = 'fbtn';
     if (k === f) btn.classList.add(k === 'all' ? 'active-all' : 'active-' + k.toLowerCase());
@@ -671,6 +743,21 @@ function card(item) {
     </div>`;
 }
 
+function emptyGREC() {
+  return `
+    <div class="card-empty">
+      <div class="card-empty-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <div class="card-empty-title">Indicadores em desenvolvimento</div>
+      <div class="card-empty-sub">Os BIs da GREC serão adicionados em breve.</div>
+    </div>`;
+}
+
 function render() {
   const q = document.getElementById('search').value.toLowerCase().trim();
   const mainEl = document.getElementById('main');
@@ -683,18 +770,34 @@ function render() {
     return matchFilter && matchSearch;
   });
 
+  const showGREC = (activeFilter === 'all' || activeFilter === 'GREC') && !q;
+
   pill.textContent = filtered.length + ' indicador' + (filtered.length !== 1 ? 'es' : '');
 
-  if (filtered.length === 0) {
+  if (filtered.length === 0 && !showGREC) {
     mainEl.innerHTML = '';
     noRes.style.display = 'block';
     return;
   }
   noRes.style.display = 'none';
 
-  // Group by section
   let html = '';
   SECTIONS.forEach(sec => {
+    if (sec.id === 'GREC') {
+      if (!showGREC) return;
+      html += `
+        <div class="section">
+          <div class="section-header">
+            <div class="section-bar ${sec.barClass}"></div>
+            <span class="section-name">${sec.id}</span>
+            <span class="section-full">${sec.full}</span>
+            <span class="section-cnt">Em breve</span>
+          </div>
+          <div class="grid">${emptyGREC()}</div>
+        </div>`;
+      return;
+    }
+
     const items = filtered.filter(d => d.gerencia === sec.id);
     if (items.length === 0) return;
 
