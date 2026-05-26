@@ -508,7 +508,7 @@
   </div>
   <div class="hd-right">
     <div class="hd-stat">
-      <div class="hd-stat-value">19</div>
+      <div class="hd-stat-value">20</div>
       <div class="hd-stat-label">Indicadores</div>
     </div>
     <div class="hd-stat">
@@ -534,7 +534,7 @@
     <button class="fbtn"            id="btn-GEER" onclick="setFilter('GEER')">GEER</button>
     <button class="fbtn"            id="btn-GREC" onclick="setFilter('GREC')">GREC</button>
   </div>
-  <div class="count-pill" id="count-pill">19 indicadores</div>
+  <div class="count-pill" id="count-pill">20 indicadores</div>
 </div>
 
 <!-- ════════════ MAIN ════════════ -->
@@ -705,7 +705,14 @@ const DATA = [
     url: 'https://app.powerbi.com/links/9s9qO7Rnwk?ctid=f8c68086-b95c-49cb-9d38-ed37940abef5&pbi_source=linkShare&bookmarkGuid=89f13903-11ea-480d-ad9d-a3bf1da22555&chromeless=true',
   },
 
-  // ── GREC ── (sem indicadores cadastrados ainda)
+  // ── GREC ──────────────────────────────────────────────────────────────────
+  {
+    nome: 'Acompanhamento OPEX da VPR',
+    produto: 'Acompanhamento OPEX da VPR',
+    tipo: 'powerbi',
+    gerencia: 'GREC',
+    url: 'https://app.powerbi.com/groups/me/reports/148912a8-5116-4639-9be2-011ace3555ef/ReportSection86e9299a8d950c359254?ctid=f8c68086-b95c-49cb-9d38-ed37940abef5&experience=power-bi',
+  },
 ];
 
 let activeFilter = 'all';
@@ -784,17 +791,32 @@ function render() {
   let html = '';
   SECTIONS.forEach(sec => {
     if (sec.id === 'GREC') {
-      if (!showGREC) return;
-      html += `
-        <div class="section">
-          <div class="section-header">
-            <div class="section-bar ${sec.barClass}"></div>
-            <span class="section-name">${sec.id}</span>
-            <span class="section-full">${sec.full}</span>
-            <span class="section-cnt">Em breve</span>
-          </div>
-          <div class="grid">${emptyGREC()}</div>
-        </div>`;
+      const grecItems = filtered.filter(d => d.gerencia === 'GREC');
+      if (grecItems.length > 0) {
+        html += `
+          <div class="section">
+            <div class="section-header">
+              <div class="section-bar ${sec.barClass}"></div>
+              <span class="section-name">${sec.id}</span>
+              <span class="section-full">${sec.full}</span>
+              <span class="section-cnt">${grecItems.length}</span>
+            </div>
+            <div class="grid">
+              ${grecItems.map(card).join('')}
+            </div>
+          </div>`;
+      } else if (showGREC) {
+        html += `
+          <div class="section">
+            <div class="section-header">
+              <div class="section-bar ${sec.barClass}"></div>
+              <span class="section-name">${sec.id}</span>
+              <span class="section-full">${sec.full}</span>
+              <span class="section-cnt">Em breve</span>
+            </div>
+            <div class="grid">${emptyGREC()}</div>
+          </div>`;
+      }
       return;
     }
 
