@@ -508,7 +508,7 @@
   </div>
   <div class="hd-right">
     <div class="hd-stat">
-      <div class="hd-stat-value">20</div>
+      <div class="hd-stat-value" id="stat-total">21</div>
       <div class="hd-stat-label">Indicadores</div>
     </div>
     <div class="hd-stat">
@@ -534,7 +534,7 @@
     <button class="fbtn"            id="btn-GEER" onclick="setFilter('GEER')">GEER</button>
     <button class="fbtn"            id="btn-GREC" onclick="setFilter('GREC')">GREC</button>
   </div>
-  <div class="count-pill" id="count-pill">20 indicadores</div>
+  <div class="count-pill" id="count-pill">21 indicadores</div>
 </div>
 
 <!-- ════════════ MAIN ════════════ -->
@@ -629,6 +629,13 @@ const DATA = [
     tipo: 'powerapps',
     gerencia: 'GRTC',
     url: 'https://apps.powerapps.com/play/e/default-f8c68086-b95c-49cb-9d38-ed37940abef5/a/8b2de29b-9823-412c-92a2-caf33d0e193f?tenantId=f8c68086-b95c-49cb-9d38-ed37940abef5&hint=b4cb9f62-82d2-4798-86d3-b241f5506675&sourcetime=1771268889333',
+  },
+  {
+    nome: 'FAQ Regulatório da Comercial',
+    produto: 'Central de Conhecimento Regulatório – Power Apps',
+    tipo: 'powerapps',
+    gerencia: 'GRTC',
+    url: 'https://apps.powerapps.com/play/e/default-f8c68086-b95c-49cb-9d38-ed37940abef5/a/cc7ba483-1f1a-4db5-b95b-7a9785469fc1?tenantId=f8c68086-b95c-49cb-9d38-ed37940abef5&hint=358ab8c0-42a2-4152-aa04-e8fbc8a23d50&sourcetime=1719251431120',
   },
   {
     nome: 'Agenda Regulatória',
@@ -840,6 +847,7 @@ function render() {
   mainEl.innerHTML = html;
 }
 
+document.getElementById('stat-total').textContent = DATA.length;
 render();
 </script>
 </body>
