@@ -3,851 +3,582 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portal de Dados DREG</title>
+<title>Portal de Dados | Diretoria de Regulação | Grupo Energisa</title>
 <style>
-  :root {
-    --bg: #080f1c;
-    --bg-card: #162a44;
-    --bg-card-hover: #1c3252;
-    --bg-header: #060d1a;
-    --border: #1e3557;
-    --border-hover: rgba(240,192,64,.4);
-    --gold: #f0c040;
-    --gold-dim: rgba(240,192,64,.12);
-    --text: #dce8f5;
-    --text-dim: #6b859e;
-    --grtc: #2196f3;
-    --ggat: #22c976;
-    --geer: #f08030;
-    --grec: #a855f7;
-    --pbi: #f2c811;
-    --sp: #03b8ba;
-    --pa: #b36bba;
-    --wb: #4fa8e8;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
-    min-height: 100vh;
-  }
-
-  /* ── HEADER ── */
-  header {
-    background: var(--bg-header);
-    border-bottom: 1px solid #162030;
-    padding: 28px 48px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  header::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 60% 80% at 50% -20%, rgba(240,192,64,.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .hd-left { display: flex; align-items: center; gap: 20px; }
-
-  .hd-logo {
-    width: 52px; height: 52px;
-    background: linear-gradient(135deg, #1a3555, #0d2040);
-    border: 1px solid rgba(240,192,64,.3);
-    border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .hd-logo svg { width: auto; height: 46px; }
-
-  .hd-texts { display: flex; flex-direction: column; }
-
-  .hd-eyebrow {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: var(--text-dim);
-    margin-bottom: 3px;
-  }
-
-  .hd-title {
-    font-size: 30px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    line-height: 1;
-  }
-
-  .hd-title .portal { color: var(--text); }
-  .hd-title .dreg   { color: var(--gold); margin-left: 8px; }
-
-  .hd-right {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    flex-shrink: 0;
-  }
-
-  .hd-stat {
-    text-align: center;
-    background: rgba(255,255,255,.03);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 10px 20px;
-  }
-
-  .hd-stat-value {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--gold);
-    line-height: 1;
-  }
-
-  .hd-stat-label {
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-top: 3px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  /* ── CONTROLS ── */
-  .controls {
-    padding: 16px 48px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(6,13,26,.6);
-    flex-wrap: wrap;
-  }
-
-  .search-wrap {
-    position: relative;
-    flex: 1;
-    min-width: 200px;
-    max-width: 380px;
-  }
-
-  .search-wrap svg {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-dim);
-    pointer-events: none;
-  }
-
-  .search-wrap input {
-    width: 100%;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 9px 12px 9px 38px;
-    border-radius: 8px;
-    font-size: 13px;
-    outline: none;
-    transition: border-color .2s;
-    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
-  }
-
-  .search-wrap input:focus { border-color: rgba(240,192,64,.5); }
-  .search-wrap input::placeholder { color: var(--text-dim); }
-
-  .divider { width: 1px; height: 28px; background: var(--border); flex-shrink: 0; }
-
-  .filters { display: flex; gap: 8px; flex-wrap: wrap; }
-
-  .fbtn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    padding: 7px 18px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: .5px;
-    transition: all .2s;
-    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
-  }
-
-  .fbtn:hover { border-color: var(--gold); color: var(--gold); }
-
-  .fbtn.active-all  { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
-  .fbtn.active-grtc { border-color: var(--grtc); color: var(--grtc); background: rgba(33,150,243,.12); }
-  .fbtn.active-ggat { border-color: var(--ggat); color: var(--ggat); background: rgba(34,201,118,.12); }
-  .fbtn.active-geer { border-color: var(--geer); color: var(--geer); background: rgba(240,128,48,.12); }
-  .fbtn.active-grec { border-color: var(--grec); color: var(--grec); background: rgba(168,85,247,.12); }
-
-  .count-pill {
-    margin-left: auto;
-    font-size: 12px;
-    color: var(--text-dim);
-    padding: 6px 14px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    white-space: nowrap;
-  }
-
-  /* ── MAIN ── */
-  main { padding: 32px 48px; }
-
-  /* Section */
-  .section { margin-bottom: 44px; }
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 18px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .section-bar {
-    width: 4px; height: 20px;
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-
-  .grtc-bar { background: var(--grtc); }
-  .ggat-bar { background: var(--ggat); }
-  .geer-bar { background: var(--geer); }
-  .grec-bar { background: var(--grec); }
-
-  .section-name {
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  .section-full {
-    font-size: 13px;
-    color: var(--text-dim);
-  }
-
-  .section-cnt {
-    margin-left: auto;
-    font-size: 11px;
-    color: var(--text-dim);
-    background: rgba(255,255,255,.04);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 2px 10px;
-  }
-
-  /* Grid */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 14px;
-  }
-
-  /* Card */
-  .card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 18px 18px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    position: relative;
-    overflow: hidden;
-    transition: all .25s ease;
-  }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
-    border-radius: 14px 0 0 14px;
-    transition: width .25s;
-  }
-
-  .card.grtc::before { background: var(--grtc); }
-  .card.ggat::before { background: var(--ggat); }
-  .card.geer::before { background: var(--geer); }
-  .card.grec::before { background: var(--grec); }
-
-  .card:hover {
-    background: var(--bg-card-hover);
-    border-color: var(--border-hover);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(0,0,0,.4);
-  }
-
-  .card:hover::before { width: 5px; }
-
-  /* Empty card (GREC sem BIs) */
-  .card-empty {
-    background: rgba(22,42,68,.4);
-    border: 1px dashed rgba(168,85,247,.25);
-    border-radius: 14px;
-    padding: 28px 18px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    text-align: center;
-    opacity: .7;
-  }
-
-  .card-empty-icon {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: rgba(168,85,247,.1);
-    border: 1px solid rgba(168,85,247,.2);
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 4px;
-  }
-
-  .card-empty-icon svg { width: 18px; height: 18px; color: var(--grec); }
-  .card-empty-title { font-size: 13px; font-weight: 600; color: var(--text-dim); }
-  .card-empty-sub   { font-size: 11px; color: var(--text-dim); opacity: .7; }
-
-  /* Card top row */
-  .card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  /* Type badge */
-  .type-badge {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .6px;
-    padding: 3px 9px;
-    border-radius: 5px;
-  }
-
-  .type-badge .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .tb-powerbi    { background: rgba(242,200,17,.1);  color: var(--pbi); border: 1px solid rgba(242,200,17,.2); }
-  .tb-powerbi .dot { background: var(--pbi); }
-
-  .tb-sharepoint { background: rgba(3,184,186,.1);   color: var(--sp);  border: 1px solid rgba(3,184,186,.2); }
-  .tb-sharepoint .dot { background: var(--sp); }
-
-  .tb-powerapps  { background: rgba(179,107,186,.1); color: var(--pa);  border: 1px solid rgba(179,107,186,.2); }
-  .tb-powerapps .dot { background: var(--pa); }
-
-  .tb-web        { background: rgba(79,168,232,.1);  color: var(--wb);  border: 1px solid rgba(79,168,232,.2); }
-  .tb-web .dot   { background: var(--wb); }
-
-  /* Gerencia badge */
-  .ger-badge {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .5px;
-    padding: 3px 9px;
-    border-radius: 5px;
-  }
-
-  .gb-GRTC { background: rgba(33,150,243,.18);  color: #60b8ff; border: 1px solid rgba(33,150,243,.3); }
-  .gb-GGAT { background: rgba(34,201,118,.18);  color: #5deba0; border: 1px solid rgba(34,201,118,.3); }
-  .gb-GEER { background: rgba(240,128,48,.18);  color: #ffaa60; border: 1px solid rgba(240,128,48,.3); }
-  .gb-GREC { background: rgba(168,85,247,.18);  color: #cc88ff; border: 1px solid rgba(168,85,247,.3); }
-
-  /* Card name */
-  .card-nome {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.35;
-  }
-
-  .card-produto {
-    font-size: 12px;
-    color: var(--text-dim);
-    line-height: 1.4;
-  }
-
-  /* Card footer */
-  .card-footer {
-    margin-top: auto;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  .btn-access {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--gold-dim);
-    border: 1px solid rgba(240,192,64,.3);
-    color: var(--gold);
-    padding: 7px 18px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all .2s;
-    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
-  }
-
-  .btn-access:hover {
-    background: rgba(240,192,64,.2);
-    border-color: var(--gold);
-  }
-
-  .btn-access svg { width: 13px; height: 13px; }
-
-  /* No results */
-  .no-results {
-    display: none;
-    text-align: center;
-    padding: 72px 24px;
-    color: var(--text-dim);
-  }
-
-  .no-results svg { width: 48px; height: 48px; margin-bottom: 16px; opacity: .35; }
-  .no-results h3 { font-size: 18px; margin-bottom: 6px; color: var(--text); }
-
-  .hidden { display: none !important; }
-
-  /* Footer */
-  footer {
-    margin-top: 16px;
-    padding: 18px 48px;
-    border-top: 1px solid var(--border);
-    text-align: center;
-    font-size: 11px;
-    color: var(--text-dim);
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    header, .controls, main, footer { padding-left: 20px; padding-right: 20px; }
-    .hd-title { font-size: 22px; }
-    .hd-stat { padding: 8px 14px; }
-    .hd-right { gap: 12px; }
-    .count-pill { display: none; }
-  }
-
-  @media (max-width: 480px) {
-    .hd-right { display: none; }
-  }
+/* ============================================================
+   PORTAL DE DADOS DREG / componente para a página do SharePoint
+   Mesmo padrão visual do componente das gerências.
+
+   Este arquivo usa JavaScript (busca e filtros). Funciona porque
+   é servido pelo GitHub Pages e entra na página do SharePoint
+   dentro de um iframe: o bloqueio de script do SharePoint vale
+   para código colado direto na página, não para página remota.
+   ============================================================ */
+
+:root{
+  /* cores das gerências, iguais às do componente das gerências */
+  --geer:#F37021;  --geer-tx:#C75410;  --geer-bg:rgba(243,112,33,.10);  --geer-bd:rgba(243,112,33,.30);
+  --grec:#C2CD23;  --grec-tx:#7C8410;  --grec-bg:rgba(194,205,35,.15);  --grec-bd:rgba(194,205,35,.42);
+  --grtc:#009FC2;  --grtc-tx:#007894;  --grtc-bg:rgba(0,159,194,.10);   --grtc-bd:rgba(0,159,194,.30);
+  --ggat:#56B7AB;  --ggat-tx:#2F8C81;  --ggat-bg:rgba(86,183,171,.14);  --ggat-bd:rgba(86,183,171,.38);
+  /* marcas dos produtos: ponto sólido, fundo, borda e texto de cada etiqueta */
+  --pbi:#F2C811; --pbi-bg:rgba(242,200,17,.22); --pbi-bd:rgba(203,167,10,.60); --pbi-tx:#7A6200;
+  --spo:#038387; --spo-bg:rgba(3,131,135,.14);  --spo-bd:rgba(3,131,135,.42);  --spo-tx:#02696C;
+  --pap:#8B2FA0; --pap-bg:rgba(139,47,160,.13); --pap-bd:rgba(139,47,160,.40); --pap-tx:#75218A;
+  --web:#4A7FA5; --web-bg:rgba(74,127,165,.14); --web-bd:rgba(74,127,165,.42); --web-tx:#3B6A8C;
+  /* neutros */
+  --nv:#004758; --ink:#1F2A33; --muted:#5B6B78; --soft:#71838E;
+  --border:#E3E9EE; --bg:#F6F8FA; --wh:#FFFFFF;
+}
+*{ box-sizing:border-box; }
+body{
+  margin:0; padding:0; background:var(--wh); color:var(--ink);
+  font-family:"Segoe UI",Inter,system-ui,-apple-system,Arial,sans-serif;
+  font-size:14px; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+/* ════════════════════════════════════════════════════════════
+   CABEÇALHO PADRÃO DOS TÓPICOS
+   Bloco reutilizável: copiar este trecho de CSS junto com o
+   elemento de cabeçalho correspondente em qualquer outro tópico
+   do site, trocando apenas o texto do título.
+   ════════════════════════════════════════════════════════════ */
+.topbar{
+  --sym:clamp(82px,9.2vw,114px);   /* largura do símbolo da diretoria */
+  position:relative; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+  /* recuo vertical curto de propósito: é o que deixa a faixa baixa
+     mesmo com o símbolo grande, que quase preenche a altura dela */
+  min-height:clamp(92px,9.8vw,122px);
+  padding:4px 0;
+  background:linear-gradient(100deg,
+    #124A44 0%, #165D54 23%, #12776F 49%, #0F6E6B 66%, #0A4750 100%);
+}
+/* O fundo sangra de ponta a ponta, mas o conteúdo segue a mesma
+   largura máxima e o mesmo recuo lateral do .wrap. É isso que alinha
+   o símbolo com a borda direita dos painéis logo abaixo. */
+.tb-inner{
+  position:relative; z-index:2;
+  width:100%; max-width:1180px; margin:0 auto; padding:0 22px;
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+}
+.topbar::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 10% 120% at 18% 48%, rgba(255,255,255,.40), rgba(255,255,255,.07) 34%, transparent 66%),
+    radial-gradient(ellipse 36% 190% at 30% 50%, rgba(150,240,228,.11), transparent 64%),
+    radial-gradient(ellipse 60% 140% at 50% 120%, rgba(0,0,0,.20), transparent 62%);
+}
+.topbar::after{
+  content:""; position:absolute; inset:0; pointer-events:none; opacity:.55;
+  background-image:radial-gradient(circle, rgba(255,255,255,.60) .9px, transparent 1.15px);
+  background-size:9px 9px;
+  -webkit-mask-image:linear-gradient(90deg, transparent 50%, #000 76%, rgba(0,0,0,.35) 100%);
+          mask-image:linear-gradient(90deg, transparent 50%, #000 76%, rgba(0,0,0,.35) 100%);
+}
+.tb-art{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+
+.tb-title{
+  position:relative; z-index:2; flex:1; min-width:0; margin:0; text-align:center;
+  color:#fff; font-style:italic; font-weight:800;
+  font-size:clamp(19px,2.7vw,34px); line-height:1.15; letter-spacing:.2px;
+  text-shadow:0 2px 12px rgba(0,0,0,.30);
+}
+/* espaçador do mesmo tamanho do símbolo: é ele que mantém o título
+   opticamente centralizado, em vez de deslocado para a esquerda */
+.tb-vazio{ flex:0 0 var(--sym); width:var(--sym); }
+.tb-sym{ flex:0 0 var(--sym); width:var(--sym); height:auto; }
+@media(max-width:620px){ .tb-inner{ padding:0 15px; } }
+@media(max-width:560px){
+  .tb-vazio{ display:none; }
+  .topbar{ --sym:66px; }
+}
+/* ══════════════════ fim do cabeçalho padrão ══════════════════ */
+
+/* ════════════════════════════════════════════════════════════
+   SÍMBOLO 3D DA DIRETORIA
+   Cinco camadas orbitais em torno de uma esfera. Cada órbita tem
+   raio próprio, o que separa GRTC e GGAT, cujas cores são as mais
+   próximas da paleta.
+   A esfera fica NO MEIO das órbitas: cada órbita é partida em duas,
+   a metade de cima (distante) atrás da esfera e a de baixo (próxima)
+   na frente. Cada partícula tem duas cópias, uma por camada, e a
+   troca acontece nos extremos laterais, fora da silhueta da esfera.
+   ════════════════════════════════════════════════════════════ */
+.s3{ display:block; overflow:visible; }
+
+/* As quatro peças de cada órbita recebem a MESMA rotação animada.
+   Vivem em camadas diferentes e não podem ficar no mesmo grupo, então
+   é a animação idêntica que as mantém coladas. transform-box:view-box
+   fixa a origem no centro do viewBox, e não no contorno de cada
+   elemento, que mudaria conforme a partícula anda. */
+.s3 .plano{
+  transform-box:view-box; transform-origin:50px 50px;
+  animation-timing-function:linear; animation-iteration-count:infinite;
+}
+.s3 .pl-grtc{ animation-name:plano000; animation-duration:43s; }
+.s3 .pl-geer{ animation-name:plano036; animation-duration:37s; }
+.s3 .pl-ggat{ animation-name:plano072; animation-duration:54s; }
+.s3 .pl-grec{ animation-name:plano108; animation-duration:49s; }
+.s3 .pl-asse{ animation-name:plano144; animation-duration:63s; }
+@keyframes plano000{ from{ transform:rotate(0deg);   } to{ transform:rotate(360deg);  } }
+@keyframes plano036{ from{ transform:rotate(36deg);  } to{ transform:rotate(-324deg); } }
+@keyframes plano072{ from{ transform:rotate(72deg);  } to{ transform:rotate(432deg);  } }
+@keyframes plano108{ from{ transform:rotate(108deg); } to{ transform:rotate(-252deg); } }
+@keyframes plano144{ from{ transform:rotate(144deg); } to{ transform:rotate(504deg);  } }
+
+.s3 .esfera{ transform-box:fill-box; transform-origin:center; animation:respira 10s ease-in-out infinite; }
+@keyframes respira{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.035); } }
+.s3 .brilho{ transform-box:fill-box; transform-origin:center; animation:brilha 10s ease-in-out infinite; }
+@keyframes brilha{ 0%,100%{ transform:translate(0,0); opacity:.92; } 50%{ transform:translate(1.5px,-1px); opacity:1; } }
+
+/* O caminho parte do extremo esquerdo e, com sweep 0, desce primeiro:
+   0 a 50% é a metade de baixo, a PRÓXIMA; 50 a 100% é a de cima, a DISTANTE. */
+.s3 .part{
+  offset-rotate:0deg;
+  transform-box:fill-box; transform-origin:center;
+  animation-timing-function:linear; animation-iteration-count:infinite;
+}
+.s3 .p-grtc{ offset-path:path('M 14,50   a 36,14     0 1,0 72,0 a 36,14     0 1,0 -72,0'); animation-duration:14s,  14s,  14s;   }
+.s3 .p-geer{ offset-path:path('M 16,50   a 34,13     0 1,0 68,0 a 34,13     0 1,0 -68,0'); animation-duration:12.2s,12.2s,12.2s; animation-delay:-4.3s,-4.3s,-4.3s; }
+.s3 .p-ggat{ offset-path:path('M 19,50   a 31,11.5   0 1,0 62,0 a 31,11.5   0 1,0 -62,0'); animation-duration:18s,  18s,  18s;   animation-delay:-8.6s,-8.6s,-8.6s; }
+.s3 .p-grec{ offset-path:path('M 21.5,50 a 28.5,10.5 0 1,0 57,0 a 28.5,10.5 0 1,0 -57,0'); animation-duration:15.7s,15.7s,15.7s; animation-delay:-2.1s,-2.1s,-2.1s; }
+.s3 .p-asse{ offset-path:path('M 24,50   a 26,9.5    0 1,0 52,0 a 26,9.5    0 1,0 -52,0'); animation-duration:20.3s,20.3s,20.3s; animation-delay:-11.4s,-11.4s,-11.4s; }
+
+@keyframes orbVolta{ to{ offset-distance:100%; } }
+@keyframes orbEscala{
+  0%  { transform:scale(1);    }  /* lateral esquerda  */
+  25% { transform:scale(1.20); }  /* embaixo, próxima  */
+  50% { transform:scale(1);    }  /* lateral direita   */
+  75% { transform:scale(.60);  }  /* em cima, distante */
+  100%{ transform:scale(1);    }
+}
+.s3 .pn{ animation-name:orbVolta, orbEscala, orbCamadaFrente; }
+@keyframes orbCamadaFrente{ 0%,49.9%{ opacity:1; } 50%,100%{ opacity:0; } }
+.s3 .pf{ animation-name:orbVolta, orbEscala, orbCamadaFundo; }
+@keyframes orbCamadaFundo{ 0%,49.9%{ opacity:0; } 50%,100%{ opacity:1; } }
+
+.wrap{ max-width:1180px; margin:0 auto; padding:26px 22px 34px; }
+
+/* ---------------- topo ---------------- */
+.top-sub{ margin:0 0 18px; color:var(--muted); font-size:13.5px; line-height:1.55; max-width:660px; }
+
+/* ---------------- controles ---------------- */
+.controls{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  padding:12px 14px; margin-bottom:22px;
+  border:1px solid var(--border); border-radius:11px; background:var(--bg);
+}
+.search{ position:relative; flex:1 1 250px; min-width:200px; }
+.search svg{ position:absolute; left:11px; top:50%; transform:translateY(-50%);
+  color:var(--soft); pointer-events:none; }
+.search input{
+  width:100%; padding:9px 12px 9px 33px; font-family:inherit; font-size:13px;
+  color:var(--ink); background:var(--wh);
+  border:1px solid var(--border); border-radius:8px; outline:none;
+  transition:border-color .18s, box-shadow .18s;
+}
+.search input::placeholder{ color:var(--soft); }
+.search input:focus{ border-color:var(--grtc); box-shadow:0 0 0 3px rgba(0,159,194,.16); }
+
+.filters{ display:flex; gap:6px; flex-wrap:wrap; }
+.fbtn{
+  padding:7px 13px; border-radius:20px; cursor:pointer;
+  font-family:inherit; font-size:12px; font-weight:700; letter-spacing:.2px;
+  color:var(--muted); background:var(--wh); border:1px solid var(--border);
+  transition:all .18s;
+}
+.fbtn:hover{ border-color:var(--soft); color:var(--nv); }
+.fbtn:focus-visible{ outline:2px solid var(--grtc); outline-offset:2px; }
+.fbtn.on{ color:#fff; }
+.fbtn.on.f-all { background:var(--nv);   border-color:var(--nv); }
+.fbtn.on.f-GEER{ background:var(--geer); border-color:var(--geer); }
+.fbtn.on.f-GREC{ background:var(--grec); border-color:var(--grec); color:#4E5408; }
+.fbtn.on.f-GRTC{ background:var(--grtc); border-color:var(--grtc); }
+.fbtn.on.f-GGAT{ background:var(--ggat); border-color:var(--ggat); }
+
+.count{ margin-left:auto; color:var(--soft); font-size:11.5px; font-weight:650; white-space:nowrap; }
+.count b{ color:var(--nv); font-weight:800; }
+
+/* ---------------- seções por gerência ---------------- */
+.section{ margin-bottom:26px; }
+.section:last-child{ margin-bottom:0; }
+.sec-head{ display:flex; align-items:center; gap:11px; flex-wrap:wrap;
+  margin-bottom:12px; padding-bottom:9px; border-bottom:1px solid var(--border); }
+.sec-bar{ width:5px; height:20px; border-radius:3px; background:var(--cor); flex-shrink:0; }
+.sec-sigla{ color:var(--cor-tx); font-size:17px; font-weight:820; letter-spacing:.4px; line-height:1; }
+.sec-nome{ color:var(--muted); font-size:12.5px; font-weight:500; }
+.sec-cnt{ margin-left:auto; padding:2px 10px; border-radius:20px;
+  background:var(--cor-bg); border:1px solid var(--cor-bd);
+  color:var(--cor-tx); font-size:11px; font-weight:750; white-space:nowrap; }
+
+/* TESTE: preenchimento chapado no lugar do degradê.
+   --cor-fill é o fundo do cartão, na cor da gerência. A borda colorida
+   continua só na lateral esquerda, como antes.
+   Cada cor tem peso visual diferente, então a opacidade do preenchimento
+   é calibrada uma a uma: o verde-limão precisa de mais que o azul para
+   render a mesma presença. */
+.section.geer{ --cor:var(--geer); --cor-tx:var(--geer-tx); --cor-bg:var(--geer-bg); --cor-bd:var(--geer-bd);
+  --cor-fill:rgba(243,112,33,.14); }
+.section.grec{ --cor:var(--grec); --cor-tx:var(--grec-tx); --cor-bg:var(--grec-bg); --cor-bd:var(--grec-bd);
+  --cor-fill:rgba(194,205,35,.22); }
+.section.grtc{ --cor:var(--grtc); --cor-tx:var(--grtc-tx); --cor-bg:var(--grtc-bg); --cor-bd:var(--grtc-bd);
+  --cor-fill:rgba(0,159,194,.13); }
+.section.ggat{ --cor:var(--ggat); --cor-tx:var(--ggat-tx); --cor-bg:var(--ggat-bg); --cor-bd:var(--ggat-bd);
+  --cor-fill:rgba(86,183,171,.18); }
+
+/* ---------------- cartões de indicador ---------------- */
+.grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(258px,1fr)); gap:13px; }
+
+.card{
+  display:flex; flex-direction:column; min-height:0;
+  padding:13px 15px 13px; border-radius:12px;
+  background:var(--cor-fill);
+  border:1px solid var(--border); border-left:4px solid var(--cor);
+  box-shadow:0 1px 3px rgba(31,42,51,.05);
+  transition:box-shadow .22s ease, transform .22s ease, border-color .22s ease;
+}
+.card:hover,.card:focus-within{
+  box-shadow:0 9px 24px rgba(24,55,72,.13); transform:translateY(-2px);
+  border-top-color:var(--cor-bd); border-right-color:var(--cor-bd); border-bottom-color:var(--cor-bd);
+}
+/* a etiqueta da ferramenta fica sozinha, encostada à direita */
+.card-top{ display:flex; justify-content:flex-end; margin-bottom:7px; }
+/* Etiqueta da ferramenta: cor cheia da marca do produto, para distinguir
+   à distância um Power BI de um Power Apps sem precisar ler. */
+.tipo{
+  display:inline-flex; align-items:center; gap:5px;
+  padding:3.5px 10px; border-radius:20px;
+  background:var(--tc-bg); border:1px solid var(--tc-bd); color:var(--tc-tx);
+  font-size:10px; font-weight:800; letter-spacing:.35px; white-space:nowrap;
+}
+.tipo .dot{ width:6px; height:6px; border-radius:50%; background:var(--tc); flex-shrink:0;
+  box-shadow:0 0 0 2px rgba(255,255,255,.65); }
+.tipo.powerbi   { --tc:var(--pbi); --tc-bg:var(--pbi-bg); --tc-bd:var(--pbi-bd); --tc-tx:var(--pbi-tx); }
+.tipo.sharepoint{ --tc:var(--spo); --tc-bg:var(--spo-bg); --tc-bd:var(--spo-bd); --tc-tx:var(--spo-tx); }
+.tipo.powerapps { --tc:var(--pap); --tc-bg:var(--pap-bg); --tc-bd:var(--pap-bd); --tc-tx:var(--pap-tx); }
+.tipo.web       { --tc:var(--web); --tc-bg:var(--web-bg); --tc-bd:var(--web-bd); --tc-tx:var(--web-tx); }
+
+.card-nome{ margin:0 0 5px; color:var(--nv); font-size:16.5px; font-weight:720;
+  line-height:1.24; letter-spacing:-.3px; }
+.card-produto{ margin:0; color:var(--muted); font-size:11.5px; line-height:1.4; }
+
+.card-foot{ margin-top:auto; padding-top:12px; }
+.acessar{
+  display:inline-flex; align-items:center; gap:6px; text-decoration:none;
+  color:var(--cor-tx); font-size:12px; font-weight:750;
+  transition:gap .18s;
+}
+.acessar svg{ width:13px; height:13px; transition:transform .18s; }
+.card:hover .acessar svg{ transform:translateX(3px); }
+.acessar:focus-visible{ outline:2px solid var(--cor); outline-offset:3px; border-radius:3px; }
+
+/* Nome do indicador repetido só para leitor de tela: sem isso o link
+   anuncia apenas "Acessar", igual em todos os cartões. */
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* ---------------- estado vazio ---------------- */
+.vazio{
+  grid-column:1 / -1; padding:22px 18px; border-radius:12px;
+  border:1px dashed var(--cor-bd); background:var(--bg); text-align:center;
+}
+.vazio-t{ margin:0 0 3px; color:var(--nv); font-size:13px; font-weight:700; }
+.vazio-s{ margin:0; color:var(--muted); font-size:12px; }
+
+.sem-resultado{ display:none; padding:40px 20px; text-align:center; }
+.sem-resultado h3{ margin:0 0 5px; color:var(--nv); font-size:15px; font-weight:700; }
+.sem-resultado p{ margin:0; color:var(--muted); font-size:13px; }
+
+/* ---------------- responsivo ---------------- */
+@media(max-width:620px){
+  .wrap{ padding:20px 15px 26px; }
+  .count{ margin-left:0; }
+  .grid{ grid-template-columns:1fr; }
+}
+@media(prefers-reduced-motion:reduce){
+  *{ transition-duration:.01ms!important; }
+  /* o símbolo congela; o desenho permanece legível */
+  .s3 .plano,.s3 .esfera,.s3 .brilho,.s3 .part{ animation:none!important; }
+  .s3 .pf{ opacity:1; }
+}
 </style>
 </head>
 <body>
 
-<!-- ════════════ HEADER ════════════ -->
-<header>
-  <div class="hd-left">
-    <div class="hd-logo">
-      <!-- Transmission tower icon -->
-      <svg viewBox="0 0 30 38" fill="none" stroke="#f0c040" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-        <!-- peak -->
-        <line x1="15" y1="1"  x2="12" y2="8"  stroke-width="1.5"/>
-        <line x1="15" y1="1"  x2="18" y2="8"  stroke-width="1.5"/>
-        <line x1="12" y1="8"  x2="18" y2="8"  stroke-width="1.5"/>
-        <!-- upper cross-arms -->
-        <line x1="5"  y1="8"  x2="12" y2="8"  stroke-width="1.5"/>
-        <line x1="18" y1="8"  x2="25" y2="8"  stroke-width="1.5"/>
-        <line x1="5"  y1="8"  x2="5"  y2="10.5" stroke-width="1.5"/>
-        <line x1="25" y1="8"  x2="25" y2="10.5" stroke-width="1.5"/>
-        <!-- upper body sides -->
-        <line x1="12" y1="8"  x2="10" y2="18" stroke-width="1.5"/>
-        <line x1="18" y1="8"  x2="20" y2="18" stroke-width="1.5"/>
-        <!-- upper body X bracing -->
-        <line x1="12" y1="8"  x2="20" y2="18" stroke-width="1"/>
-        <line x1="18" y1="8"  x2="10" y2="18" stroke-width="1"/>
-        <!-- upper body mid bar -->
-        <line x1="11" y1="13" x2="19" y2="13" stroke-width="1"/>
-        <!-- lower cross-arms -->
-        <line x1="4"  y1="18" x2="10" y2="18" stroke-width="1.5"/>
-        <line x1="20" y1="18" x2="26" y2="18" stroke-width="1.5"/>
-        <line x1="4"  y1="18" x2="4"  y2="20.5" stroke-width="1.5"/>
-        <line x1="26" y1="18" x2="26" y2="20.5" stroke-width="1.5"/>
-        <!-- lower body sides -->
-        <line x1="10" y1="18" x2="7.5" y2="29" stroke-width="1.5"/>
-        <line x1="20" y1="18" x2="22.5" y2="29" stroke-width="1.5"/>
-        <!-- lower body X bracing -->
-        <line x1="10" y1="18" x2="22.5" y2="29" stroke-width="1"/>
-        <line x1="20" y1="18" x2="7.5"  y2="29" stroke-width="1"/>
-        <!-- lower body mid bar -->
-        <line x1="8.75" y1="23.5" x2="21.25" y2="23.5" stroke-width="1"/>
-        <!-- base feet -->
-        <line x1="7.5"  y1="29" x2="5"  y2="36" stroke-width="1.5"/>
-        <line x1="22.5" y1="29" x2="25" y2="36" stroke-width="1.5"/>
-        <line x1="5"    y1="36" x2="25" y2="36" stroke-width="1.5"/>
-      </svg>
-    </div>
-    <div class="hd-texts">
-      <span class="hd-eyebrow">Diretoria de Regulação</span>
-      <h1 class="hd-title">
-        <span class="portal">Portal de Dados</span><span class="dreg">DREG</span>
-      </h1>
-    </div>
-  </div>
-  <div class="hd-right">
-    <div class="hd-stat">
-      <div class="hd-stat-value" id="stat-total">21</div>
-      <div class="hd-stat-label">Indicadores</div>
-    </div>
-    <div class="hd-stat">
-      <div class="hd-stat-value">4</div>
-      <div class="hd-stat-label">Gerências</div>
-    </div>
+<!-- ══════════ CABEÇALHO PADRÃO DO TÓPICO ══════════ -->
+<header class="topbar">
+  <svg class="tb-art" viewBox="0 0 1200 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <g fill="none" stroke="#FFFFFF" opacity=".24">
+      <path d="M-20 76 C 260 44, 540 27, 1220 7"   stroke-width="1"/>
+      <path d="M-20 90 C 300 60, 650 41, 1220 27"  stroke-width=".8" opacity=".62"/>
+      <path d="M-20 34 C 240 20, 520 13, 1220 -2"  stroke-width=".7" opacity=".45"/>
+    </g>
+    <g fill="none" stroke="#BFF3EC" opacity=".55">
+      <path d="M830 -12 C 892 30, 934 60, 1006 112" stroke-width="1.2"/>
+      <path d="M902 -12 C 968 34, 1004 62, 1078 112" stroke-width=".9" opacity=".72"/>
+      <path d="M-20 62 C 220 31, 430 21, 780 13"    stroke-width=".9" opacity=".6"/>
+    </g>
+  </svg>
+  <div class="tb-inner">
+  <div class="tb-vazio" aria-hidden="true"></div>
+  <h1 class="tb-title">Portal de Dados DREG</h1>
+
+  <!-- Símbolo da diretoria: esfera e cinco camadas orbitais -->
+  <svg class="s3 tb-sym" viewBox="0 0 100 100" role="img"
+       aria-label="Símbolo da Diretoria de Regulação: as quatro gerências e as assessorias orbitando um núcleo">
+    <defs>
+      <radialGradient id="g-esfera" cx="34%" cy="28%" r="78%">
+        <stop offset="0%"   stop-color="#5FE0EE"/>
+        <stop offset="24%"  stop-color="#1BA5BA"/>
+        <stop offset="62%"  stop-color="#0B6E7E"/>
+        <stop offset="88%"  stop-color="#064A57"/>
+        <stop offset="100%" stop-color="#03323C"/>
+      </radialGradient>
+      <radialGradient id="g-rim" cx="50%" cy="50%" r="50%">
+        <stop offset="76%"  stop-color="#5FE3F0" stop-opacity="0"/>
+        <stop offset="94%"  stop-color="#5FE3F0" stop-opacity=".40"/>
+        <stop offset="100%" stop-color="#9BF2FA" stop-opacity=".70"/>
+      </radialGradient>
+      <radialGradient id="g-brilho" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="#FFFFFF" stop-opacity=".92"/>
+        <stop offset="55%"  stop-color="#FFFFFF" stop-opacity=".28"/>
+        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+
+    <!-- ATRÁS · metades distantes das órbitas -->
+    <g fill="none" stroke-width="1.5" stroke-linecap="round">
+      <path class="plano pl-grtc" d="M 14,50   A 36,14     0 0 1 86,50"   stroke="rgba(0,159,194,.48)"/>
+      <path class="plano pl-geer" d="M 16,50   A 34,13     0 0 1 84,50"   stroke="rgba(243,112,33,.48)"/>
+      <path class="plano pl-ggat" d="M 19,50   A 31,11.5   0 0 1 81,50"   stroke="rgba(86,183,171,.50)"/>
+      <path class="plano pl-grec" d="M 21.5,50 A 28.5,10.5 0 0 1 78.5,50" stroke="rgba(194,205,35,.52)"/>
+      <path class="plano pl-asse" d="M 24,50   A 26,9.5    0 0 1 76,50"   stroke="rgba(206,212,215,.46)"/>
+    </g>
+    <g class="plano pl-grtc"><circle class="part pf p-grtc" r="3.0" fill="#009FC2"/></g>
+    <g class="plano pl-geer"><circle class="part pf p-geer" r="2.9" fill="#F37021"/></g>
+    <g class="plano pl-ggat"><circle class="part pf p-ggat" r="2.6" fill="#56B7AB"/></g>
+    <g class="plano pl-grec"><circle class="part pf p-grec" r="2.5" fill="#C2CD23"/></g>
+    <g class="plano pl-asse"><circle class="part pf p-asse" r="2.3" fill="#CED4D7"/></g>
+
+    <!-- A ESFERA -->
+    <g class="esfera">
+      <circle cx="50" cy="50" r="15" fill="url(#g-esfera)"/>
+      <circle cx="50" cy="50" r="15" fill="url(#g-rim)"/>
+      <ellipse class="brilho" cx="44.5" cy="43.5" rx="5.6" ry="4.2" fill="url(#g-brilho)"/>
+    </g>
+
+    <!-- NA FRENTE · metades próximas das órbitas -->
+    <g fill="none" stroke-width="1.5" stroke-linecap="round">
+      <path class="plano pl-grtc" d="M 14,50   A 36,14     0 0 0 86,50"   stroke="rgba(0,159,194,.94)"/>
+      <path class="plano pl-geer" d="M 16,50   A 34,13     0 0 0 84,50"   stroke="rgba(243,112,33,.94)"/>
+      <path class="plano pl-ggat" d="M 19,50   A 31,11.5   0 0 0 81,50"   stroke="rgba(86,183,171,.96)"/>
+      <path class="plano pl-grec" d="M 21.5,50 A 28.5,10.5 0 0 0 78.5,50" stroke="rgba(194,205,35,.97)"/>
+      <path class="plano pl-asse" d="M 24,50   A 26,9.5    0 0 0 76,50"   stroke="rgba(206,212,215,.86)"/>
+    </g>
+    <g class="plano pl-grtc"><circle class="part pn p-grtc" r="3.0" fill="#009FC2"/></g>
+    <g class="plano pl-geer"><circle class="part pn p-geer" r="2.9" fill="#F37021"/></g>
+    <g class="plano pl-ggat"><circle class="part pn p-ggat" r="2.6" fill="#56B7AB"/></g>
+    <g class="plano pl-grec"><circle class="part pn p-grec" r="2.5" fill="#C2CD23"/></g>
+    <g class="plano pl-asse"><circle class="part pn p-asse" r="2.3" fill="#CED4D7"/></g>
+  </svg>
   </div>
 </header>
 
-<!-- ════════════ CONTROLS ════════════ -->
-<div class="controls">
-  <div class="search-wrap">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-    </svg>
-    <input type="text" id="search" placeholder="Buscar indicador…" oninput="render()">
+<div class="wrap">
+
+  <p class="top-sub">Painéis, aplicativos e páginas mantidos pelas gerências da diretoria.
+    Use a busca ou filtre por gerência.</p>
+
+  <!-- ══════════ CONTROLES ══════════ -->
+  <div class="controls">
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="search" id="busca" placeholder="Buscar indicador, produto ou gerência" aria-label="Buscar">
+    </div>
+    <div class="filters" role="group" aria-label="Filtrar por gerência">
+      <button type="button" class="fbtn on f-all"  data-f="all">Todos</button>
+      <button type="button" class="fbtn f-GRTC"    data-f="GRTC">GRTC</button>
+      <button type="button" class="fbtn f-GGAT"    data-f="GGAT">GGAT</button>
+      <button type="button" class="fbtn f-GEER"    data-f="GEER">GEER</button>
+      <button type="button" class="fbtn f-GREC"    data-f="GREC">GREC</button>
+    </div>
+    <p class="count" id="contagem"><b>21</b> indicadores</p>
   </div>
-  <div class="divider"></div>
-  <div class="filters">
-    <button class="fbtn active-all" id="btn-all"  onclick="setFilter('all')">Todos</button>
-    <button class="fbtn"            id="btn-GRTC" onclick="setFilter('GRTC')">GRTC</button>
-    <button class="fbtn"            id="btn-GGAT" onclick="setFilter('GGAT')">GGAT</button>
-    <button class="fbtn"            id="btn-GEER" onclick="setFilter('GEER')">GEER</button>
-    <button class="fbtn"            id="btn-GREC" onclick="setFilter('GREC')">GREC</button>
+
+  <!-- ══════════ RESULTADO ══════════ -->
+  <main id="lista"></main>
+
+  <div class="sem-resultado" id="sem-resultado">
+    <h3>Nenhum resultado encontrado</h3>
+    <p>Tente outro termo de busca ou remova o filtro de gerência.</p>
   </div>
-  <div class="count-pill" id="count-pill">21 indicadores</div>
+
 </div>
-
-<!-- ════════════ MAIN ════════════ -->
-<main id="main"></main>
-
-<div class="no-results" id="no-results">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-  </svg>
-  <h3>Nenhum resultado encontrado</h3>
-  <p>Tente outro termo de busca ou remova os filtros.</p>
-</div>
-
-<footer>Portal de Dados DREG &mdash; Diretoria de Regulação &mdash; Energisa</footer>
 
 <script>
-const TYPE_LABELS = {
-  powerbi:    'Power BI',
-  sharepoint: 'SharePoint',
-  powerapps:  'Power Apps',
-  web:        'Web',
+const SECOES = [
+  { id:'GEER', nome:'Gerência de Estudos e Estratégia Regulatória' },
+  { id:'GREC', nome:'Gerência de Regulação Econômica' },
+  { id:'GRTC', nome:'Gerência de Gestão Técnica Comercial' },
+  { id:'GGAT', nome:'Gerência de Gestão de Ativos' },
+];
+
+const TIPOS = {
+  powerbi:'Power BI', sharepoint:'SharePoint', powerapps:'Power Apps', web:'Web',
 };
 
-const SECTIONS = [
-  { id: 'GRTC', full: 'Gerência de Gestão Técnica e Comercial',       barClass: 'grtc-bar' },
-  { id: 'GGAT', full: 'Gerência de Gestão de Ativos',                  barClass: 'ggat-bar' },
-  { id: 'GEER', full: 'Gerência de Estudos e Estratégia Regulatória',  barClass: 'geer-bar' },
-  { id: 'GREC', full: 'Gerência de Regulação Econômica',               barClass: 'grec-bar' },
+const DADOS = [
+  /* ── GEER ─────────────────────────────────────────────────── */
+  { gerencia:'GEER', tipo:'powerbi', nome:'DRE Setorial', produto:'DRE Setorial',
+    url:'https://app.powerbi.com/links/9s9qO7Rnwk?ctid=f8c68086-b95c-49cb-9d38-ed37940abef5&pbi_source=linkShare&bookmarkGuid=a05c1199-1029-4bc5-8e20-6a845014aedc&chromeless=true' },
+  { gerencia:'GEER', tipo:'powerbi', nome:'Carregamento Financeiro', produto:'Carregamento Financeiro',
+    url:'https://app.powerbi.com/links/9s9qO7Rnwk?ctid=f8c68086-b95c-49cb-9d38-ed37940abef5&pbi_source=linkShare&bookmarkGuid=89f13903-11ea-480d-ad9d-a3bf1da22555&chromeless=true' },
+  { gerencia:'GEER', tipo:'web', nome:'Acompanhamento dos Processos ANEEL', produto:'Acompanhamento dos Processos ANEEL (2024–2026)',
+    url:'https://consultas-processos-aneel.vercel.app/' },
+
+  /* ── GREC ─────────────────────────────────────────────────── */
+  { gerencia:'GREC', tipo:'powerbi', nome:'Acompanhamento OPEX da VPR', produto:'Acompanhamento OPEX da VPR',
+    url:'https://app.powerbi.com/groups/me/reports/148912a8-5116-4639-9be2-011ace3555ef/ReportSection86e9299a8d950c359254?ctid=f8c68086-b95c-49cb-9d38-ed37940abef5&experience=power-bi' },
+
+  /* ── GRTC ─────────────────────────────────────────────────── */
+  { gerencia:'GRTC', tipo:'powerbi', nome:'Indicadores Comerciais', produto:'BI Indicadores Comerciais',
+    url:'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/0df16ef2-cb0f-4d40-a4e4-e21403861092/efe11607ded792d30a46?experience=power-bi' },
+  { gerencia:'GRTC', tipo:'powerbi', nome:'Governança Corporativa', produto:'BI Governança Corporativa',
+    url:'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/742285d2-92eb-43bf-bc6e-3c924a8dc772?experience=power-bi' },
+  { gerencia:'GRTC', tipo:'powerbi', nome:'Qualidade Técnica', produto:'BI Qualidade Técnica, gerencial',
+    url:'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/3d495194-32a2-42a9-bac3-6884cc72862b/e4a7f4aec67c9a0a853b?experience=power-bi' },
+  { gerencia:'GRTC', tipo:'powerbi', nome:'Autos de Infração, Reuniões e Processos Julgados', produto:'BI Autos de Infração, Reuniões e Processos Julgados',
+    url:'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/6785d9a5-bd42-48d8-9752-8ddaf6adf748/f413121f8a32b2f64547?experience=power-bi' },
+  { gerencia:'GRTC', tipo:'powerbi', nome:'ISE', produto:'BI ISE',
+    url:'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/ac4d56b8-ddd8-426c-8eff-59954a3136e7/ReportSection0244f96681f0d0b4459d?experience=power-bi' },
+  { gerencia:'GRTC', tipo:'powerbi', nome:'Interrupções acima de 24 horas', produto:'BI Interrupções Acima de 24 Horas',
+    url:'https://app.powerbi.com/reportEmbed?reportId=3a7405b9-4ac9-403a-ba3c-1cb77f1a4b86&autoAuth=true&ctid=f8c68086-b95c-49cb-9d38-ed37940abef5' },
+  { gerencia:'GRTC', tipo:'powerbi', nome:'Qualidade do Produto', produto:'BI Qualidade do Produto',
+    url:'https://app.powerbi.com/reportEmbed?reportId=375c16a3-34ea-472c-b7a7-d972f33b9ddb&autoAuth=true&ctid=f8c68086-b95c-49cb-9d38-ed37940abef5' },
+  { gerencia:'GRTC', tipo:'powerbi', nome:'POTEE', produto:'POTEE, Power BI',
+    url:'https://app.powerbi.com/reportEmbed?reportId=55e2c3e1-9d11-4c0b-85d5-2fb3d4c686f9&autoAuth=true&ctid=f8c68086-b95c-49cb-9d38-ed37940abef5' },
+  { gerencia:'GRTC', tipo:'powerbi', nome:'Agenda Regulatória', produto:'BI Agenda Regulatória',
+    url:'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/6f072f63-fca0-4cf1-ac05-76654c8d4961/ReportSection40c24de1585aa63273b4?experience=power-bi' },
+  { gerencia:'GRTC', tipo:'powerapps', nome:'Partes Relacionadas', produto:'Power Apps CRC, Partes Relacionadas',
+    url:'https://apps.powerapps.com/play/e/default-f8c68086-b95c-49cb-9d38-ed37940abef5/a/8b2de29b-9823-412c-92a2-caf33d0e193f?tenantId=f8c68086-b95c-49cb-9d38-ed37940abef5&hint=b4cb9f62-82d2-4798-86d3-b241f5506675&sourcetime=1771268889333' },
+  { gerencia:'GRTC', tipo:'powerapps', nome:'FAQ Regulatório da Comercial', produto:'Central de Conhecimento Regulatório, Power Apps',
+    url:'https://apps.powerapps.com/play/e/default-f8c68086-b95c-49cb-9d38-ed37940abef5/a/cc7ba483-1f1a-4db5-b95b-7a9785469fc1?tenantId=f8c68086-b95c-49cb-9d38-ed37940abef5&hint=358ab8c0-42a2-4152-aa04-e8fbc8a23d50&sourcetime=1719251431120' },
+  { gerencia:'GRTC', tipo:'web', nome:'Performance Operacional', produto:'Visão Executiva de Performance Operacional',
+    url:'https://thiagobruno-coder.github.io/Painel_Executivo/' },
+
+  /* ── GGAT ─────────────────────────────────────────────────── */
+  { gerencia:'GGAT', tipo:'sharepoint', nome:'Ativo Elétrico', produto:'Ativo Elétrico',
+    url:'https://energisa.sharepoint.com/sites/GGAT-GestodeAtivos/SitePages/Ativo-El%C3%A9trico.aspx' },
+  { gerencia:'GGAT', tipo:'sharepoint', nome:'Capitalização', produto:'Capitalização',
+    url:'https://energisa.sharepoint.com/sites/GGAT-GestodeAtivos/SitePages/Capitaliza%C3%A7%C3%A3o.aspx' },
+  { gerencia:'GGAT', tipo:'sharepoint', nome:'Projeção BRL/VNR', produto:'Projeção BRL/VNR',
+    url:'https://energisa.sharepoint.com/sites/GGAT-GestodeAtivos/SitePages/Proje%C3%A7%C3%A3o-de-BRL.aspx' },
+  { gerencia:'GGAT', tipo:'sharepoint', nome:'Glosa', produto:'Indicador de Glosa',
+    url:'https://energisa.sharepoint.com/sites/GGAT-GestodeAtivos/SitePages/Indicador-de-Glosa.aspx' },
+  { gerencia:'GGAT', tipo:'powerbi', nome:'Conciliação de Bases', produto:'Conciliação físico versus contábil',
+    url:'https://app.powerbi.com/reportEmbed?reportId=f5118945-4541-4f3d-8eea-90097f8c1a56&autoAuth=true&ctid=f8c68086-b95c-49cb-9d38-ed37940abef5' },
 ];
 
-const DATA = [
-  // ── GRTC ──────────────────────────────────────────────────────────────────
-  {
-    nome: 'Indicadores Comerciais',
-    produto: 'BI Indicadores Comerciais',
-    tipo: 'powerbi',
-    gerencia: 'GRTC',
-    url: 'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/0df16ef2-cb0f-4d40-a4e4-e21403861092/efe11607ded792d30a46?experience=power-bi',
-  },
-  {
-    nome: 'Governança Corporativa',
-    produto: 'BI Governança Corporativa',
-    tipo: 'powerbi',
-    gerencia: 'GRTC',
-    url: 'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/742285d2-92eb-43bf-bc6e-3c924a8dc772?experience=power-bi',
-  },
-  {
-    nome: 'Qualidade Técnica',
-    produto: 'BI Qualidade Técnica – Gerencial',
-    tipo: 'powerbi',
-    gerencia: 'GRTC',
-    url: 'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/3d495194-32a2-42a9-bac3-6884cc72862b/e4a7f4aec67c9a0a853b?experience=power-bi',
-  },
-  {
-    nome: 'Autos de Infração, Reuniões e Processos Julgados',
-    produto: 'BI Autos de Infração, Reuniões e Processos Julgados',
-    tipo: 'powerbi',
-    gerencia: 'GRTC',
-    url: 'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/6785d9a5-bd42-48d8-9752-8ddaf6adf748/f413121f8a32b2f64547?experience=power-bi',
-  },
-  {
-    nome: 'ISE',
-    produto: 'BI ISE',
-    tipo: 'powerbi',
-    gerencia: 'GRTC',
-    url: 'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/ac4d56b8-ddd8-426c-8eff-59954a3136e7/ReportSection0244f96681f0d0b4459d?experience=power-bi',
-  },
-  {
-    nome: 'Interrupções (> 24 horas)',
-    produto: 'BI Interrupções Acima de 24 Horas',
-    tipo: 'powerbi',
-    gerencia: 'GRTC',
-    url: 'https://app.powerbi.com/reportEmbed?reportId=3a7405b9-4ac9-403a-ba3c-1cb77f1a4b86&autoAuth=true&ctid=f8c68086-b95c-49cb-9d38-ed37940abef5',
-  },
-  {
-    nome: 'Qualidade do Produto',
-    produto: 'BI Qualidade do Produto',
-    tipo: 'powerbi',
-    gerencia: 'GRTC',
-    url: 'https://app.powerbi.com/reportEmbed?reportId=375c16a3-34ea-472c-b7a7-d972f33b9ddb&autoAuth=true&ctid=f8c68086-b95c-49cb-9d38-ed37940abef5',
-  },
-  {
-    nome: 'POTEE',
-    produto: 'POTEE – Power BI',
-    tipo: 'powerbi',
-    gerencia: 'GRTC',
-    url: 'https://app.powerbi.com/reportEmbed?reportId=55e2c3e1-9d11-4c0b-85d5-2fb3d4c686f9&autoAuth=true&ctid=f8c68086-b95c-49cb-9d38-ed37940abef5',
-  },
-  {
-    nome: 'Partes Relacionadas',
-    produto: 'Power Apps CRC – Partes Relacionadas',
-    tipo: 'powerapps',
-    gerencia: 'GRTC',
-    url: 'https://apps.powerapps.com/play/e/default-f8c68086-b95c-49cb-9d38-ed37940abef5/a/8b2de29b-9823-412c-92a2-caf33d0e193f?tenantId=f8c68086-b95c-49cb-9d38-ed37940abef5&hint=b4cb9f62-82d2-4798-86d3-b241f5506675&sourcetime=1771268889333',
-  },
-  {
-    nome: 'FAQ Regulatório da Comercial',
-    produto: 'Central de Conhecimento Regulatório – Power Apps',
-    tipo: 'powerapps',
-    gerencia: 'GRTC',
-    url: 'https://apps.powerapps.com/play/e/default-f8c68086-b95c-49cb-9d38-ed37940abef5/a/cc7ba483-1f1a-4db5-b95b-7a9785469fc1?tenantId=f8c68086-b95c-49cb-9d38-ed37940abef5&hint=358ab8c0-42a2-4152-aa04-e8fbc8a23d50&sourcetime=1719251431120',
-  },
-  {
-    nome: 'Agenda Regulatória',
-    produto: 'BI Agenda Regulatória',
-    tipo: 'powerbi',
-    gerencia: 'GRTC',
-    url: 'https://app.powerbi.com/groups/40c5d676-8b82-43ea-8a7c-53b32f082f19/reports/6f072f63-fca0-4cf1-ac05-76654c8d4961/ReportSection40c24de1585aa63273b4?experience=power-bi',
-  },
-  {
-    nome: 'Performance Operacional',
-    produto: 'Visão Executiva de Performance Operacional',
-    tipo: 'web',
-    gerencia: 'GRTC',
-    url: 'https://thiagobruno-coder.github.io/Painel_Executivo/',
-  },
+/* Ordem das seções: da gerência com mais indicadores para a com menos.
+   O cálculo usa a base inteira, não o resultado filtrado, para que a ordem
+   não se reembaralhe a cada tecla digitada na busca. Ordenar aqui, e não
+   na mão, mantém a ordem correta quando um indicador for incluído. */
+const TOTAL_POR_GERENCIA = DADOS.reduce((acc, d) => {
+  acc[d.gerencia] = (acc[d.gerencia] || 0) + 1;
+  return acc;
+}, {});
+SECOES.sort((a, b) => (TOTAL_POR_GERENCIA[b.id] || 0) - (TOTAL_POR_GERENCIA[a.id] || 0));
 
-  // ── GGAT ──────────────────────────────────────────────────────────────────
-  {
-    nome: 'Ativo Elétrico',
-    produto: 'Ativo Elétrico',
-    tipo: 'sharepoint',
-    gerencia: 'GGAT',
-    url: 'https://energisa.sharepoint.com/sites/GGAT-GestodeAtivos/SitePages/Ativo-El%C3%A9trico.aspx',
-  },
-  {
-    nome: 'Capitalização',
-    produto: 'Capitalização',
-    tipo: 'sharepoint',
-    gerencia: 'GGAT',
-    url: 'https://energisa.sharepoint.com/sites/GGAT-GestodeAtivos/SitePages/Capitaliza%C3%A7%C3%A3o.aspx',
-  },
-  {
-    nome: 'Projeção BRL/VNR',
-    produto: 'Projeção BRL/VNR',
-    tipo: 'sharepoint',
-    gerencia: 'GGAT',
-    url: 'https://energisa.sharepoint.com/sites/GGAT-GestodeAtivos/SitePages/Proje%C3%A7%C3%A3o-de-BRL.aspx',
-  },
-  {
-    nome: 'Glosa',
-    produto: 'Glosa',
-    tipo: 'sharepoint',
-    gerencia: 'GGAT',
-    url: 'https://energisa.sharepoint.com/sites/GGAT-GestodeAtivos/SitePages/Indicador-de-Glosa.aspx',
-  },
-  {
-    nome: 'Conciliação de Bases',
-    produto: 'Conciliação Físico vs. Contábil',
-    tipo: 'powerbi',
-    gerencia: 'GGAT',
-    url: 'https://app.powerbi.com/reportEmbed?reportId=f5118945-4541-4f3d-8eea-90097f8c1a56&autoAuth=true&ctid=f8c68086-b95c-49cb-9d38-ed37940abef5',
-  },
+const elLista = document.getElementById('lista');
+const elVazio = document.getElementById('sem-resultado');
+const elCont  = document.getElementById('contagem');
+const elBusca = document.getElementById('busca');
 
-  // ── GEER ──────────────────────────────────────────────────────────────────
-  {
-    nome: 'DRE Setorial',
-    produto: 'DRE Setorial',
-    tipo: 'powerbi',
-    gerencia: 'GEER',
-    url: 'https://app.powerbi.com/links/9s9qO7Rnwk?ctid=f8c68086-b95c-49cb-9d38-ed37940abef5&pbi_source=linkShare&bookmarkGuid=a05c1199-1029-4bc5-8e20-6a845014aedc&chromeless=true',
-  },
-  {
-    nome: 'Acompanhamento dos Processos ANEEL',
-    produto: 'Acompanhamento dos Processos ANEEL (2024–2026)',
-    tipo: 'web',
-    gerencia: 'GEER',
-    url: 'https://consultas-processos-aneel.vercel.app/',
-  },
-  {
-    nome: 'Carregamento Financeiro',
-    produto: 'Carregamento Financeiro',
-    tipo: 'powerbi',
-    gerencia: 'GEER',
-    url: 'https://app.powerbi.com/links/9s9qO7Rnwk?ctid=f8c68086-b95c-49cb-9d38-ed37940abef5&pbi_source=linkShare&bookmarkGuid=89f13903-11ea-480d-ad9d-a3bf1da22555&chromeless=true',
-  },
+let filtro = 'all';
 
-  // ── GREC ──────────────────────────────────────────────────────────────────
-  {
-    nome: 'Acompanhamento OPEX da VPR',
-    produto: 'Acompanhamento OPEX da VPR',
-    tipo: 'powerbi',
-    gerencia: 'GREC',
-    url: 'https://app.powerbi.com/groups/me/reports/148912a8-5116-4639-9be2-011ace3555ef/ReportSection86e9299a8d950c359254?ctid=f8c68086-b95c-49cb-9d38-ed37940abef5&experience=power-bi',
-  },
-];
-
-let activeFilter = 'all';
-
-function setFilter(f) {
-  activeFilter = f;
-  ['all','GRTC','GGAT','GEER','GREC'].forEach(k => {
-    const btn = document.getElementById('btn-' + k);
-    btn.className = 'fbtn';
-    if (k === f) btn.classList.add(k === 'all' ? 'active-all' : 'active-' + k.toLowerCase());
-  });
-  render();
+/* Escapa texto antes de injetar no HTML. Os dados são internos, mas um
+   nome com & ou < quebraria a marcação silenciosamente. */
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c => (
+    { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]
+  ));
 }
 
-function card(item) {
-  const typeLabel = TYPE_LABELS[item.tipo] || item.tipo;
+function cartao(item){
   return `
-    <div class="card ${item.gerencia.toLowerCase()}">
+    <article class="card">
       <div class="card-top">
-        <span class="type-badge tb-${item.tipo}">
-          <span class="dot"></span>${typeLabel}
-        </span>
-        <span class="ger-badge gb-${item.gerencia}">${item.gerencia}</span>
+        <span class="tipo ${item.tipo}"><span class="dot"></span>${esc(TIPOS[item.tipo] || item.tipo)}</span>
       </div>
-      <div class="card-nome">${item.nome}</div>
-      <div class="card-produto">${item.produto}</div>
-      <div class="card-footer">
-        <a class="btn-access" href="${item.url}" target="_blank" rel="noopener noreferrer">
+      <h3 class="card-nome">${esc(item.nome)}</h3>
+      <p class="card-produto">${esc(item.produto)}</p>
+      <div class="card-foot">
+        <a class="acessar" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">
           Acessar
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
           </svg>
+          <span class="sr-only"> ${esc(item.nome)}</span>
         </a>
       </div>
-    </div>`;
+    </article>`;
 }
 
-function emptyGREC() {
-  return `
-    <div class="card-empty">
-      <div class="card-empty-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="12" y1="8" x2="12" y2="12"/>
-          <line x1="12" y1="16" x2="12.01" y2="16"/>
-        </svg>
-      </div>
-      <div class="card-empty-title">Indicadores em desenvolvimento</div>
-      <div class="card-empty-sub">Os BIs da GREC serão adicionados em breve.</div>
-    </div>`;
-}
+function render(){
+  const q = elBusca.value.toLowerCase().trim();
 
-function render() {
-  const q = document.getElementById('search').value.toLowerCase().trim();
-  const mainEl = document.getElementById('main');
-  const noRes  = document.getElementById('no-results');
-  const pill   = document.getElementById('count-pill');
-
-  let filtered = DATA.filter(d => {
-    const matchFilter = activeFilter === 'all' || d.gerencia === activeFilter;
-    const matchSearch = !q || d.nome.toLowerCase().includes(q) || d.produto.toLowerCase().includes(q) || d.gerencia.toLowerCase().includes(q);
-    return matchFilter && matchSearch;
+  const visiveis = DADOS.filter(d => {
+    const porFiltro = filtro === 'all' || d.gerencia === filtro;
+    const porBusca  = !q
+      || d.nome.toLowerCase().includes(q)
+      || d.produto.toLowerCase().includes(q)
+      || d.gerencia.toLowerCase().includes(q)
+      || (TIPOS[d.tipo] || '').toLowerCase().includes(q);
+    return porFiltro && porBusca;
   });
 
-  const showGREC = (activeFilter === 'all' || activeFilter === 'GREC') && !q;
+  elCont.innerHTML = '<b>' + visiveis.length + '</b> ' +
+    (visiveis.length === 1 ? 'indicador' : 'indicadores');
 
-  pill.textContent = filtered.length + ' indicador' + (filtered.length !== 1 ? 'es' : '');
-
-  if (filtered.length === 0 && !showGREC) {
-    mainEl.innerHTML = '';
-    noRes.style.display = 'block';
+  if (visiveis.length === 0){
+    elLista.innerHTML = '';
+    elVazio.style.display = 'block';
     return;
   }
-  noRes.style.display = 'none';
+  elVazio.style.display = 'none';
 
-  let html = '';
-  SECTIONS.forEach(sec => {
-    if (sec.id === 'GREC') {
-      const grecItems = filtered.filter(d => d.gerencia === 'GREC');
-      if (grecItems.length > 0) {
-        html += `
-          <div class="section">
-            <div class="section-header">
-              <div class="section-bar ${sec.barClass}"></div>
-              <span class="section-name">${sec.id}</span>
-              <span class="section-full">${sec.full}</span>
-              <span class="section-cnt">${grecItems.length}</span>
-            </div>
-            <div class="grid">
-              ${grecItems.map(card).join('')}
-            </div>
-          </div>`;
-      } else if (showGREC) {
-        html += `
-          <div class="section">
-            <div class="section-header">
-              <div class="section-bar ${sec.barClass}"></div>
-              <span class="section-name">${sec.id}</span>
-              <span class="section-full">${sec.full}</span>
-              <span class="section-cnt">Em breve</span>
-            </div>
-            <div class="grid">${emptyGREC()}</div>
-          </div>`;
-      }
-      return;
-    }
-
-    const items = filtered.filter(d => d.gerencia === sec.id);
-    if (items.length === 0) return;
-
-    html += `
-      <div class="section">
-        <div class="section-header">
-          <div class="section-bar ${sec.barClass}"></div>
-          <span class="section-name">${sec.id}</span>
-          <span class="section-full">${sec.full}</span>
-          <span class="section-cnt">${items.length}</span>
+  elLista.innerHTML = SECOES.map(sec => {
+    const itens = visiveis.filter(d => d.gerencia === sec.id);
+    if (itens.length === 0) return '';
+    return `
+      <section class="section ${sec.id.toLowerCase()}">
+        <div class="sec-head">
+          <span class="sec-bar"></span>
+          <span class="sec-sigla">${esc(sec.id)}</span>
+          <span class="sec-nome">${esc(sec.nome)}</span>
+          <span class="sec-cnt">${itens.length} ${itens.length === 1 ? 'indicador' : 'indicadores'}</span>
         </div>
-        <div class="grid">
-          ${items.map(card).join('')}
-        </div>
-      </div>`;
-  });
-
-  mainEl.innerHTML = html;
+        <div class="grid">${itens.map(cartao).join('')}</div>
+      </section>`;
+  }).join('');
 }
 
-document.getElementById('stat-total').textContent = DATA.length;
+document.querySelectorAll('.fbtn').forEach(b => {
+  b.addEventListener('click', () => {
+    filtro = b.dataset.f;
+    document.querySelectorAll('.fbtn').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    render();
+  });
+});
+elBusca.addEventListener('input', render);
+
 render();
 </script>
 </body>
