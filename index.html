@@ -43,12 +43,13 @@ body{
    do site, trocando apenas o texto do título.
    ════════════════════════════════════════════════════════════ */
 .topbar{
-  --sym:clamp(82px,9.2vw,114px);   /* largura do símbolo da diretoria */
+  --sym:clamp(104px,11.5vw,148px);   /* largura do símbolo da diretoria */
   position:relative; overflow:hidden;
   display:flex; align-items:center; justify-content:center;
-  /* recuo vertical curto de propósito: é o que deixa a faixa baixa
-     mesmo com o símbolo grande, que quase preenche a altura dela */
-  min-height:clamp(92px,9.8vw,122px);
+  /* O símbolo é um sistema de elipses achatadas: seu viewBox foi
+     recortado para o conteúdo real, numa proporção de cerca de 2:1.
+     Por isso ele pode ser largo sem exigir altura da faixa. */
+  min-height:clamp(78px,8.2vw,100px);
   padding:4px 0;
   background:linear-gradient(100deg,
     #124A44 0%, #165D54 23%, #12776F 49%, #0F6E6B 66%, #0A4750 100%);
@@ -79,6 +80,8 @@ body{
 
 .tb-title{
   position:relative; z-index:2; flex:1; min-width:0; margin:0; text-align:center;
+  /* Trebuchet MS é a fonte do banner original do site */
+  font-family:"Trebuchet MS","Lucida Grande","Lucida Sans Unicode","Lucida Sans",Tahoma,sans-serif;
   color:#fff; font-style:italic; font-weight:800;
   font-size:clamp(19px,2.7vw,34px); line-height:1.15; letter-spacing:.2px;
   text-shadow:0 2px 12px rgba(0,0,0,.30);
@@ -326,7 +329,7 @@ body{
   <h1 class="tb-title">Portal de Dados DREG</h1>
 
   <!-- Símbolo da diretoria: esfera e cinco camadas orbitais -->
-  <svg class="s3 tb-sym" viewBox="0 0 100 100" role="img"
+  <svg class="s3 tb-sym" viewBox="9 30 82 40" role="img"
        aria-label="Símbolo da Diretoria de Regulação: as quatro gerências e as assessorias orbitando um núcleo">
     <defs>
       <radialGradient id="g-esfera" cx="34%" cy="28%" r="78%">
